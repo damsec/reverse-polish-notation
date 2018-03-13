@@ -10,7 +10,7 @@ import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 import static java.util.stream.Collectors.toMap;
 
-public class InfixConverter implements Converter {
+public class PostfixConverter implements Converter {
 
     private static final char DECIMAL_SEPARATOR_CHARACTER = '.';
     private static final char SPACE_CHARACTER = ' ';
@@ -25,7 +25,7 @@ public class InfixConverter implements Converter {
 
     private Validator validator;
 
-    public InfixConverter(Validator validator) {
+    public PostfixConverter(Validator validator) {
         this.validator = validator;
     }
 

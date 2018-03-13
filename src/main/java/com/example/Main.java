@@ -1,7 +1,7 @@
 package com.example;
 
 import com.example.converter.Converter;
-import com.example.converter.InfixConverter;
+import com.example.converter.PostfixConverter;
 import com.example.evaluator.Evaluator;
 import com.example.evaluator.PostfixEvaluator;
 import com.example.validator.InfixValidator;
@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Converter converter = new InfixConverter(new InfixValidator());
+        Converter converter = new PostfixConverter(new InfixValidator());
         Evaluator evaluator = new PostfixEvaluator();
         Scanner scanner = new Scanner(System.in);
 

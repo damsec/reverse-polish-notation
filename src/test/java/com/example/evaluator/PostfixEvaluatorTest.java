@@ -8,8 +8,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class PostfixEvaluatorTest {
@@ -17,61 +16,61 @@ public class PostfixEvaluatorTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private PostfixEvaluator evaluator;
+    private PostfixEvaluator postfixEvaluator;
 
     @Before
     public void setUp() {
-        evaluator = new PostfixEvaluator();
+        postfixEvaluator = new PostfixEvaluator();
     }
 
     @Test
-    public void shouldReturnSumOfIntegerNumbers() {
-        String input = "3 4 +";
+    public void should_Return_SumOfIntegerNumbers() {
+        String postfixExpression = "3 4 +";
         double expectedResult = 7;
-        assertThat(evaluator.evaluate(input), is(expectedResult));
+        assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void shouldReturnDifferenceOfIntegerNumbers() {
-        String input = "3 4 -";
+    public void should_Return_DifferenceOfIntegerNumbers() {
+        String postfixExpression = "3 4 -";
         double expectedResult = -1;
-        assertThat(evaluator.evaluate(input), is(expectedResult));
+        assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void shouldReturnSumOfExpressionWithMultipleAdditionOperators() {
-        String input = "3 4 + 5 +";
+    public void should_Return_SumOfIntegerNumbers_WithMultipleAdditionOperators() {
+        String postfixExpression = "3 4 + 5 +";
         double expectedResult = 12;
-        assertThat(evaluator.evaluate(input), is(expectedResult));
+        assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void shouldReturnDifferenceOfExpressionWithMultipleSubtractionOperators() {
-        String input = "3 4 - 5 -";
+    public void should_Return_DifferenceOfIntegerNumbers_WithMultipleSubtractionOperators() {
+        String postfixExpression = "3 4 - 5 -";
         double expectedResult = -6;
-        assertThat(evaluator.evaluate(input), is(expectedResult));
+        assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void shouldReturnSumOfDecimalNumbers() {
-        String input = "3.2 4.1 +";
+    public void should_Return_SumOfDecimalNumbers() {
+        String postfixExpression = "3.2 4.1 +";
         double expectedResult = 7.3;
-        assertThat(evaluator.evaluate(input), is(expectedResult));
+        assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void shouldThrowArithmeticExceptionIfDivideByZero() {
+    public void should_ThrowArithmeticException_If_DivideByZero() {
         exception.expect(ArithmeticException.class);
         exception.expectMessage("You can't divide by zero.");
-        
-        String input = "3 0 /";
-        evaluator.evaluate(input);
+
+        String divideByZeroPostfixExpression = "3 0 /";
+        postfixEvaluator.evaluate(divideByZeroPostfixExpression);
     }
 
     @Test
     @Parameters(method = "postfixExpressionsWithDifferentOperators")
-    public void shouldEvaluatePostfixExpressionWithDifferentOperators(String input, double expectedResult) {
-        assertThat(evaluator.evaluate(input), is(expectedResult));
+    public void should_EvaluatePostfixExpression_WithDifferentOperators(String postfixExpression, double expectedResult) {
+        assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     private Object[] postfixExpressionsWithDifferentOperators() {
