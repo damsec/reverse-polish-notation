@@ -1,9 +1,21 @@
 package com.example.validator;
 
-public class InfixValidator implements Validator{
+import com.example.operator.Operator;
+import org.mariuszgromada.math.mxparser.Expression;
 
-    private static final char LEFT_PARANTHESIS_CHARACTER = '(';
-    private static final char RIGHT_PARANTHESIS_CHARACTER = ')';
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class InfixValidator implements Validator {
+
+    private static final char LEFT_PARENTHESIS_CHARACTER = '(';
+    private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
+    private static final char NEGATIVE_SIGN_CHARACTER = '-';
+
+    private static final List<Character> operators = Arrays.stream(Operator.values())
+            .map(Operator::getSign)
+            .collect(Collectors.toList());
 
     @Override
     public boolean isValid(String infix) {
@@ -14,7 +26,7 @@ public class InfixValidator implements Validator{
 
         int leftParenthesesNumber = 0;
         int rightParenthesesNumber = 0;
-
+        boolean isPreviousCharacterOperator = false;
 
         for (int i = 0; i < infix.length(); i++) {
             char character = infix.charAt(i);
@@ -23,24 +35,38 @@ public class InfixValidator implements Validator{
                 return false;
             }
 
-            if (character == LEFT_PARANTHESIS_CHARACTER) {
+            // negative numbers are still not supported
+            if ((isNegativeSign(character) && isPreviousCharacterOperator) || (isNegativeSign(character) && i == 0)) {
+                return false;
+            }
+
+            if (character == LEFT_PARENTHESIS_CHARACTER) {
                 leftParenthesesNumber++;
             }
-            if (character == RIGHT_PARANTHESIS_CHARACTER) {
+
+            if (character == RIGHT_PARENTHESIS_CHARACTER) {
                 rightParenthesesNumber++;
                 if (rightParenthesesNumber > leftParenthesesNumber) {
                     return false;
                 }
             }
+            isPreviousCharacterOperator = isOperator(character);
         }
-        return leftParenthesesNumber == rightParenthesesNumber;
+
+        Expression expression = new Expression(infix);
+
+        return leftParenthesesNumber == rightParenthesesNumber && expression.checkSyntax();
     }
 
     private boolean isValidCharacter(char character) {
-        return String.valueOf(character).matches("[\\d\\s().]") || isOperator(character);
+        return String.valueOf(character).matches("[\\d\\s.]") || isOperator(character);
     }
 
     private boolean isOperator(char character) {
-        return String.valueOf(character).matches("[\\^*\\/+-]");
+        return operators.contains(character);
+    }
+
+    private boolean isNegativeSign(char character) {
+        return character == NEGATIVE_SIGN_CHARACTER;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.converter;
+package com.example.operator;
 
 public enum Operator {
 
