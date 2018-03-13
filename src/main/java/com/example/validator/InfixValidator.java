@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 public class InfixValidator implements Validator {
 
-    private static final char LEFT_PARENTHESIS_CHARACTER = '(';
-    private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
     private static final char NEGATIVE_SIGN_CHARACTER = '-';
 
     private static final List<Character> operators = Arrays.stream(Operator.values())
@@ -20,12 +18,10 @@ public class InfixValidator implements Validator {
     @Override
     public boolean isValid(String infix) {
 
-        if (infix == null || infix.isEmpty()) {
+        if (infix == null) {
             return false;
         }
 
-        int leftParenthesesNumber = 0;
-        int rightParenthesesNumber = 0;
         boolean isPreviousCharacterOperator = false;
 
         for (int i = 0; i < infix.length(); i++) {
@@ -39,23 +35,12 @@ public class InfixValidator implements Validator {
             if ((isNegativeSign(character) && isPreviousCharacterOperator) || (isNegativeSign(character) && i == 0)) {
                 return false;
             }
-
-            if (character == LEFT_PARENTHESIS_CHARACTER) {
-                leftParenthesesNumber++;
-            }
-
-            if (character == RIGHT_PARENTHESIS_CHARACTER) {
-                rightParenthesesNumber++;
-                if (rightParenthesesNumber > leftParenthesesNumber) {
-                    return false;
-                }
-            }
             isPreviousCharacterOperator = isOperator(character);
         }
 
         Expression expression = new Expression(infix);
 
-        return leftParenthesesNumber == rightParenthesesNumber && expression.checkSyntax();
+        return expression.checkSyntax();
     }
 
     private boolean isValidCharacter(char character) {
