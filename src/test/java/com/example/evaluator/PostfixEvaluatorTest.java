@@ -24,35 +24,35 @@ public class PostfixEvaluatorTest {
     }
 
     @Test
-    public void should_Return_SumOfIntegerNumbers() {
+    public void should_ReturnSum_OfIntegerNumbers() {
         String postfixExpression = "3 4 +";
         double expectedResult = 7;
         assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void should_Return_DifferenceOfIntegerNumbers() {
+    public void should_ReturnDifference_OfIntegerNumbers() {
         String postfixExpression = "3 4 -";
         double expectedResult = -1;
         assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void should_Return_SumOfIntegerNumbers_WithMultipleAdditionOperators() {
+    public void should_ReturnSum_OfIntegerNumbers_WithMultipleAdditionOperators() {
         String postfixExpression = "3 4 + 5 +";
         double expectedResult = 12;
         assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void should_Return_DifferenceOfIntegerNumbers_WithMultipleSubtractionOperators() {
+    public void should_ReturnDifference_OfIntegerNumbers_WithMultipleSubtractionOperators() {
         String postfixExpression = "3 4 - 5 -";
         double expectedResult = -6;
         assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
     }
 
     @Test
-    public void should_Return_SumOfDecimalNumbers() {
+    public void should_ReturnSum_OfDecimalNumbers() {
         String postfixExpression = "3.2 4.1 +";
         double expectedResult = 7.3;
         assertThat(postfixEvaluator.evaluate(postfixExpression)).isEqualTo(expectedResult);
