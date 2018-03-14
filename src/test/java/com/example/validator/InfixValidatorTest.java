@@ -58,12 +58,6 @@ public class InfixValidatorTest {
     }
 
     @Test
-    public void should_ReturnFalse_If_MultipleOperatorsAreNextToEachOther() {
-        String invalidExpression = "3**4";
-        assertThat(infixValidator.isValid(invalidExpression)).isFalse();
-    }
-
-    @Test
     @Parameters(method = "validExpressions")
     public void should_ReturnTrue_If_ExpressionIsValid(String validExpression) {
         assertThat(infixValidator.isValid(validExpression)).isTrue();

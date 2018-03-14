@@ -1,7 +1,6 @@
 package com.example.validator;
 
 import com.example.operator.Operator;
-import org.mariuszgromada.math.mxparser.Expression;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +8,8 @@ import java.util.stream.Collectors;
 
 public class InfixValidator implements Validator {
 
+    private static final char LEFT_PARENTHESIS_CHARACTER = '(';
+    private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
     private static final char NEGATIVE_SIGN_CHARACTER = '-';
 
     private static final List<Character> operators = Arrays.stream(Operator.values())
@@ -18,10 +19,11 @@ public class InfixValidator implements Validator {
     @Override
     public boolean isValid(String infix) {
 
-        if (infix == null) {
+        if (infix == null || infix.isEmpty()) {
             return false;
         }
-
+        int leftParenthesesNumber = 0;
+        int rightParenthesesNumber = 0;
         boolean isPreviousCharacterOperator = false;
 
         for (int i = 0; i < infix.length(); i++) {
@@ -35,12 +37,21 @@ public class InfixValidator implements Validator {
             if ((isNegativeSign(character) && isPreviousCharacterOperator) || (isNegativeSign(character) && i == 0)) {
                 return false;
             }
+
+            if (isLeftParenthesis(character)) {
+                leftParenthesesNumber++;
+            }
+
+            if (isRightParenthesis(character)) {
+                rightParenthesesNumber++;
+                if (rightParenthesesNumber > leftParenthesesNumber) {
+                    return false;
+                }
+            }
+
             isPreviousCharacterOperator = isOperator(character);
         }
-
-        Expression expression = new Expression(infix);
-
-        return expression.checkSyntax();
+        return leftParenthesesNumber == rightParenthesesNumber;
     }
 
     private boolean isValidCharacter(char character) {
@@ -53,5 +64,13 @@ public class InfixValidator implements Validator {
 
     private boolean isNegativeSign(char character) {
         return character == NEGATIVE_SIGN_CHARACTER;
+    }
+
+    private boolean isLeftParenthesis(char character) {
+        return character == LEFT_PARENTHESIS_CHARACTER;
+    }
+
+    private boolean isRightParenthesis(char character) {
+        return character == RIGHT_PARENTHESIS_CHARACTER;
     }
 }
