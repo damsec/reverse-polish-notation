@@ -7,7 +7,7 @@ import com.example.evaluator.PostfixEvaluator;
 import com.example.validator.InfixValidator;
 
 public class Main {
-    
+
     private static int successCount = 0;
     private static int errorCount = 0;
     private static int totalCount = 0;
@@ -16,7 +16,7 @@ public class Main {
     private static Evaluator postfixEvaluator = new PostfixEvaluator();
 
     public static void main(String[] args) {
-                
+
         for (String arg : args) {
             totalCount++;
             System.out.printf("%d. %s = ", totalCount, arg);
@@ -25,8 +25,8 @@ public class Main {
                 double result = postfixEvaluator.evaluate(postfixExpression);
                 System.out.println(result);
                 successCount++;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            } catch (IllegalArgumentException | ArithmeticException exception) {
+                System.out.println(exception.getMessage());
                 errorCount++;
             }
         }

@@ -24,36 +24,39 @@ public class PostfixConverter implements Converter {
     private StringBuilder output = new StringBuilder();
     private Stack<Character> operators = new Stack<>();
 
-    private Validator validator;
+    private Validator infixValidator;
 
-    public PostfixConverter(Validator validator) {
-        this.validator = validator;
+    public PostfixConverter(Validator infixValidator) {
+        this.infixValidator = infixValidator;
     }
 
     @Override
-    public String convert(String infix) {
-
-        if (validator.isValid(infix)) {
-            for (int i = 0; i < infix.length(); i++) {
-                char character = infix.charAt(i);
-                if (!isWhitespace(character)) {
-                    if (isDigit(character) || isDecimalSeparator(character)) {
-                        append(character);
-                    } else {
-                        if (isDifferentThanLeftParenthesis(character)) {
-                            append(SPACE_CHARACTER);
-                        }
-                        pushOperatorOnStack(character);
-                    }
-                }
-            }
-            while (!operators.isEmpty()) {
-                append(SPACE_CHARACTER);
-                append(popFromStack());
-            }
-            return output.toString();
+    public String convert(String infixExpression) {
+        if (infixValidator.isValid(infixExpression)) {
+            return convertInfixToPostfix(infixExpression);
         } else {
             throw new IllegalArgumentException("Expression is invalid");
+        }
+    }
+
+    private String convertInfixToPostfix(String infixExpression) {
+        for (char character : infixExpression.toCharArray()) {
+            if (!isWhitespace(character)) {
+                if (isDigit(character) || isDecimalSeparator(character)) {
+                    append(character);
+                } else {
+                    pushOperatorOnStack(character);
+                }
+            }
+        }
+        appendOperatorsFromStack();
+        return output.toString();
+    }
+
+    private void appendOperatorsFromStack() {
+        while (!operators.isEmpty()) {
+            append(SPACE_CHARACTER);
+            append(popFromStack());
         }
     }
 
@@ -69,15 +72,14 @@ public class PostfixConverter implements Converter {
         return character == RIGHT_PARENTHESIS_CHARACTER;
     }
 
-    private boolean isDifferentThanLeftParenthesis(char character) {
-        return character != LEFT_PARENTHESIS_CHARACTER;
-    }
-
     private void append(char character) {
         output.append(character);
     }
 
     private void pushOperatorOnStack(char character) {
+        if (!isLeftParenthesis(character)) {
+            append(SPACE_CHARACTER);
+        }
         if (!operators.isEmpty()) {
             char topOperator = operators.peek();
             if (operatorPriority(character) > operatorPriority(topOperator) || isLeftParenthesis(character)) {
@@ -85,7 +87,7 @@ public class PostfixConverter implements Converter {
             } else {
                 if (isRightParenthesis(character)) {
                     int i = 0;
-                    while (isDifferentThanLeftParenthesis(topOperator)) {
+                    while (!isLeftParenthesis(topOperator)) {
                         if (i > 0) {
                             append(SPACE_CHARACTER);
                         }

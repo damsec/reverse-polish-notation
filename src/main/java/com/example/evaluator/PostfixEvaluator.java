@@ -13,22 +13,20 @@ public class PostfixEvaluator implements Evaluator {
     private Stack<Double> operands = new Stack<>();
 
     @Override
-    public double evaluate(String postfix) {
-        String[] postfixArray = getPostfixAsArray(postfix);
-
-        for (int i = 0; i < postfixArray.length; i++) {
-            String element = postfixArray[i];
+    public double evaluate(String postfixExpression) {
+        String[] postfixExpressionArray = getPostfixExpressionAsArray(postfixExpression);
+        for (String element : postfixExpressionArray) {
             if (isNumber(element)) {
                 pushOnStack(element);
             } else {
-                pushCalculationResultOntoStack(element);
+                pushCalculationResultOnStack(element);
             }
         }
         return popFromStack();
     }
 
-    private String[] getPostfixAsArray(String postfix) {
-        return postfix.split(SPACE_STRING);
+    private String[] getPostfixExpressionAsArray(String postfixExpression) {
+        return postfixExpression.split(SPACE_STRING);
     }
 
     private boolean isNumber(String input) {
@@ -48,7 +46,7 @@ public class PostfixEvaluator implements Evaluator {
         return operands.pop();
     }
 
-    private void pushCalculationResultOntoStack(String operator) {
+    private void pushCalculationResultOnStack(String operator) {
         double result = calculate(operator);
         pushOnStack(result);
     }
@@ -76,7 +74,6 @@ public class PostfixEvaluator implements Evaluator {
         double secondNumber = popFromStack();
         return new double[]{secondNumber, firstNumber};
     }
-
 
     private double raiseToPower(double[] numbers) {
         return Math.pow(numbers[0], numbers[1]);
