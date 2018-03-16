@@ -1,9 +1,13 @@
 package com.example.evaluator;
 
+import com.example.calculation.Calculation;
+import com.example.calculation.CalculationFactory;
+import com.example.calculation.CalculationType;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Stack;
 
+import static com.example.calculation.utils.CalculationConstant.CALCULATION_TYPES;
 import static java.lang.Double.parseDouble;
 
 public class PostfixEvaluator implements Evaluator {
@@ -52,49 +56,20 @@ public class PostfixEvaluator implements Evaluator {
     }
 
     private double calculate(String operator) {
+        CalculationType calculationType = getCalculationType(operator);
+        Calculation calculation = CalculationFactory.make(calculationType);
+
         double[] numbers = popFromStackTwoElements();
-        switch (operator) {
-            case "^":
-                return raiseToPower(numbers);
-            case "*":
-                return multiply(numbers);
-            case "/":
-                return divide(numbers);
-            case "+":
-                return add(numbers);
-            case "-":
-                return subtract(numbers);
-            default:
-                throw new IllegalArgumentException("Unrecognized operator.");
-        }
+        return calculation.calculate(numbers);
+    }
+
+    private CalculationType getCalculationType(String operator) {
+        return CALCULATION_TYPES.get(operator);
     }
 
     private double[] popFromStackTwoElements() {
         double firstNumber = popFromStack();
         double secondNumber = popFromStack();
         return new double[]{secondNumber, firstNumber};
-    }
-
-    private double raiseToPower(double[] numbers) {
-        return Math.pow(numbers[0], numbers[1]);
-    }
-
-    private double multiply(double[] numbers) {
-        return numbers[0] * numbers[1];
-    }
-
-    private double divide(double[] numbers) {
-        if (numbers[1] == 0) {
-            throw new ArithmeticException("You can't divide by zero.");
-        }
-        return numbers[0] / numbers[1];
-    }
-
-    private double add(double[] numbers) {
-        return numbers[0] + numbers[1];
-    }
-
-    private double subtract(double[] numbers) {
-        return numbers[0] - numbers[1];
     }
 }

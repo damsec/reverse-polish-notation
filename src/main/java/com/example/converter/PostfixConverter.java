@@ -1,15 +1,13 @@
 package com.example.converter;
 
-import com.example.operator.Operator;
 import com.example.validator.Validator;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Stack;
 
+import static com.example.calculation.utils.CalculationConstant.CALCULATION_TYPES;
+import static com.example.calculation.utils.CalculationConstant.ZERO_PRIORITY;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
-import static java.util.stream.Collectors.toMap;
 
 public class PostfixConverter implements Converter {
 
@@ -17,10 +15,7 @@ public class PostfixConverter implements Converter {
     private static final char SPACE_CHARACTER = ' ';
     private static final char LEFT_PARENTHESIS_CHARACTER = '(';
     private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
-
-    private static final Map<Character, Integer> operatorsMap = Arrays.stream(Operator.values())
-            .collect(toMap(Operator::getSign, Operator::getPriority));
-
+    
     private StringBuilder output = new StringBuilder();
     private Stack<Character> operators = new Stack<>();
 
@@ -71,6 +66,10 @@ public class PostfixConverter implements Converter {
     private boolean isRightParenthesis(char character) {
         return character == RIGHT_PARENTHESIS_CHARACTER;
     }
+    
+    private boolean isParenthesis(char character) {
+        return isLeftParenthesis(character) || isRightParenthesis(character);
+    }
 
     private void append(char character) {
         output.append(character);
@@ -86,15 +85,7 @@ public class PostfixConverter implements Converter {
                 pushOnStack(character);
             } else {
                 if (isRightParenthesis(character)) {
-                    int i = 0;
-                    while (!isLeftParenthesis(topOperator)) {
-                        if (i > 0) {
-                            append(SPACE_CHARACTER);
-                        }
-                        append(popFromStack());
-                        topOperator = operators.peek();
-                        i++;
-                    }
+                    appendFromStackUntilReachLeftParenthesis(topOperator);
                     popFromStack();
                 } else {
                     while (operatorPriority(character) <= operatorPriority(topOperator)) {
@@ -114,6 +105,18 @@ public class PostfixConverter implements Converter {
         }
     }
 
+    private void appendFromStackUntilReachLeftParenthesis(char topOperator) {
+        int i = 0;
+        while (!isLeftParenthesis(topOperator)) {
+            if (i > 0) {
+                append(SPACE_CHARACTER);
+            }
+            append(popFromStack());
+            topOperator = operators.peek();
+            i++;
+        }
+    }
+
     private void pushOnStack(char operator) {
         operators.push(operator);
     }
@@ -123,6 +126,9 @@ public class PostfixConverter implements Converter {
     }
 
     private int operatorPriority(char operator) {
-        return operatorsMap.get(operator);
+        if(isParenthesis(operator)) {
+            return ZERO_PRIORITY;
+        }
+        return CALCULATION_TYPES.get(String.valueOf(operator)).getPriority();
     }
 }

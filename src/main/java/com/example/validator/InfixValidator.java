@@ -1,21 +1,13 @@
 package com.example.validator;
 
-import com.example.operator.Operator;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.example.calculation.utils.CalculationConstant.CALCULATION_SIGNS;
 
 public class InfixValidator implements Validator {
 
     private static final char LEFT_PARENTHESIS_CHARACTER = '(';
     private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
     private static final char NEGATIVE_SIGN_CHARACTER = '-';
-
-    private static final List<Character> operators = Arrays.stream(Operator.values())
-            .map(Operator::getSign)
-            .collect(Collectors.toList());
-
+    
     @Override
     public boolean isValid(String infix) {
 
@@ -25,19 +17,21 @@ public class InfixValidator implements Validator {
         int leftParenthesesNumber = 0;
         int rightParenthesesNumber = 0;
         boolean isPreviousCharacterOperator = false;
-
+        boolean isPreviousCharacterLeftParenthesis = false;
+        
         for (int i = 0; i < infix.length(); i++) {
+            
             char character = infix.charAt(i);
 
             if (!isValidCharacter(character)) {
                 return false;
             }
-
+            
             // negative numbers are still not supported
-            if ((isNegativeSign(character) && isPreviousCharacterOperator) || (isNegativeSign(character) && i == 0)) {
+            if (isNegativeSign(character) && (isPreviousCharacterOperator || isPreviousCharacterLeftParenthesis || i == 0)) {
                 return false;
             }
-
+            
             if (isLeftParenthesis(character)) {
                 leftParenthesesNumber++;
             }
@@ -50,16 +44,17 @@ public class InfixValidator implements Validator {
             }
 
             isPreviousCharacterOperator = isOperator(character);
+            isPreviousCharacterLeftParenthesis = isLeftParenthesis(character);
         }
         return leftParenthesesNumber == rightParenthesesNumber;
     }
 
     private boolean isValidCharacter(char character) {
-        return String.valueOf(character).matches("[\\d\\s.]") || isOperator(character);
+        return String.valueOf(character).matches("[\\d\\s().]") || isOperator(character);
     }
 
     private boolean isOperator(char character) {
-        return operators.contains(character);
+        return CALCULATION_SIGNS.contains(String.valueOf(character));
     }
 
     private boolean isNegativeSign(char character) {
