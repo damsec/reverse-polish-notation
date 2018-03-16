@@ -18,19 +18,23 @@ public class PostfixEvaluator implements Evaluator {
 
     @Override
     public double evaluate(String postfixExpression) {
-        String[] postfixExpressionArray = getPostfixExpressionAsArray(postfixExpression);
-        for (String element : postfixExpressionArray) {
+        String[] postfixElements = getPostfixExpressionAsArray(postfixExpression);
+        evaluatePostfixExpression(postfixElements);
+        return popFromStack();
+    }
+    
+    private String[] getPostfixExpressionAsArray(String postfixExpression) {
+        return postfixExpression.split(SPACE_STRING);
+    }
+
+    private void evaluatePostfixExpression(String[] postfixElements) {
+        for (String element : postfixElements) {
             if (isNumber(element)) {
                 pushOnStack(element);
             } else {
                 pushCalculationResultOnStack(element);
             }
         }
-        return popFromStack();
-    }
-
-    private String[] getPostfixExpressionAsArray(String postfixExpression) {
-        return postfixExpression.split(SPACE_STRING);
     }
 
     private boolean isNumber(String input) {
@@ -56,11 +60,14 @@ public class PostfixEvaluator implements Evaluator {
     }
 
     private double calculate(String operator) {
-        CalculationType calculationType = getCalculationType(operator);
-        Calculation calculation = CalculationFactory.make(calculationType);
-
+        Calculation calculation = getCalculation(operator);
         double[] numbers = popFromStackTwoElements();
         return calculation.calculate(numbers);
+    }
+
+    private Calculation getCalculation(String operator) {
+        CalculationType calculationType = getCalculationType(operator);
+        return CalculationFactory.make(calculationType);
     }
 
     private CalculationType getCalculationType(String operator) {
