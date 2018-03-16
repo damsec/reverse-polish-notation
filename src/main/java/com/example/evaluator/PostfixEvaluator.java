@@ -18,15 +18,19 @@ public class PostfixEvaluator implements Evaluator {
 
     @Override
     public double evaluate(String postfixExpression) {
-        String[] postfixExpressionArray = getPostfixExpressionAsArray(postfixExpression);
-        for (String element : postfixExpressionArray) {
-            if (isNumber(element)) {
-                pushOnStack(element);
-            } else {
-                pushCalculationResultOnStack(element);
-            }
+        String[] postfixElements = getPostfixExpressionAsArray(postfixExpression);
+        for (String element : postfixElements) {
+            evaluatePostfixExpression(element);
         }
         return popFromStack();
+    }
+
+    private void evaluatePostfixExpression(String element) {
+        if (isNumber(element)) {
+            pushOnStack(element);
+        } else {
+            pushCalculationResultOnStack(element);
+        }
     }
 
     private String[] getPostfixExpressionAsArray(String postfixExpression) {
