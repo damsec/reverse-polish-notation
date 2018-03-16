@@ -2,6 +2,8 @@ package com.example.converter;
 
 import com.example.validator.Validator;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 import static com.example.calculation.utils.CalculationConstant.CALCULATION_TYPES;
@@ -15,9 +17,12 @@ public class PostfixConverter implements Converter {
     private static final char SPACE_CHARACTER = ' ';
     private static final char LEFT_PARENTHESIS_CHARACTER = '(';
     private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
+
+    private Queue<String> output = new LinkedList<>();
     
-    private StringBuilder output = new StringBuilder();
     private Stack<Character> operators = new Stack<>();
+    
+    private StringBuilder number = new StringBuilder();
 
     private Validator infixValidator;
 
@@ -38,20 +43,21 @@ public class PostfixConverter implements Converter {
         for (char character : infixExpression.toCharArray()) {
             if (!isWhitespace(character)) {
                 if (isDigit(character) || isDecimalSeparator(character)) {
-                    append(character);
+                    appendToNumber(character);
                 } else {
+                    addNumberToQueue();
                     pushOperatorOnStack(character);
                 }
             }
         }
-        appendOperatorsFromStack();
-        return output.toString();
+        addNumberToQueue();
+        addOperatorsFromStack();
+        return getOutput();
     }
 
-    private void appendOperatorsFromStack() {
+    private void addOperatorsFromStack() {
         while (!operators.isEmpty()) {
-            append(SPACE_CHARACTER);
-            append(popFromStack());
+            addToQueue(popFromStack());
         }
     }
 
@@ -66,31 +72,23 @@ public class PostfixConverter implements Converter {
     private boolean isRightParenthesis(char character) {
         return character == RIGHT_PARENTHESIS_CHARACTER;
     }
-    
+
     private boolean isParenthesis(char character) {
         return isLeftParenthesis(character) || isRightParenthesis(character);
     }
 
-    private void append(char character) {
-        output.append(character);
-    }
-
     private void pushOperatorOnStack(char character) {
-        if (!isLeftParenthesis(character)) {
-            append(SPACE_CHARACTER);
-        }
         if (!operators.isEmpty()) {
             char topOperator = operators.peek();
             if (operatorPriority(character) > operatorPriority(topOperator) || isLeftParenthesis(character)) {
                 pushOnStack(character);
             } else {
                 if (isRightParenthesis(character)) {
-                    appendFromStackUntilReachLeftParenthesis(topOperator);
+                    addFromStackUntilReachLeftParenthesis(topOperator);
                     popFromStack();
                 } else {
                     while (operatorPriority(character) <= operatorPriority(topOperator)) {
-                        append(popFromStack());
-                        append(SPACE_CHARACTER);
+                        addToQueue(popFromStack());
                         if (!operators.isEmpty()) {
                             topOperator = operators.peek();
                         } else {
@@ -105,15 +103,10 @@ public class PostfixConverter implements Converter {
         }
     }
 
-    private void appendFromStackUntilReachLeftParenthesis(char topOperator) {
-        int i = 0;
+    private void addFromStackUntilReachLeftParenthesis(char topOperator) {
         while (!isLeftParenthesis(topOperator)) {
-            if (i > 0) {
-                append(SPACE_CHARACTER);
-            }
-            append(popFromStack());
+            addToQueue(popFromStack());
             topOperator = operators.peek();
-            i++;
         }
     }
 
@@ -126,9 +119,32 @@ public class PostfixConverter implements Converter {
     }
 
     private int operatorPriority(char operator) {
-        if(isParenthesis(operator)) {
+        if (isParenthesis(operator)) {
             return ZERO_PRIORITY;
         }
         return CALCULATION_TYPES.get(String.valueOf(operator)).getPriority();
+    }
+
+    private void appendToNumber(char character) {
+        number.append(character);
+    }
+
+    private void addNumberToQueue() {
+        if (number.length() > 0) {
+            output.add(number.toString());
+            number = new StringBuilder();
+        }
+    }
+
+    private void addToQueue(char character) {
+        output.add(String.valueOf(character));
+    }
+
+    private String getOutput() {
+        StringBuilder result = new StringBuilder();
+        for (String element : output) {
+            result.append(element).append(SPACE_CHARACTER);
+        }
+        return result.toString().trim();
     }
 }

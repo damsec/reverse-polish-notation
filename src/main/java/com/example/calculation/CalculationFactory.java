@@ -18,7 +18,7 @@ public class CalculationFactory {
             case SUBTRACTION:
                 return new Subtraction();
             default:
-                throw new IllegalArgumentException("Unrecognized operator.");
+                throw new IllegalArgumentException("Unsupported calculation type.");
         }
     }
 }
