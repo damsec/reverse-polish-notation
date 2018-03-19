@@ -1,5 +1,6 @@
 package com.example.converter;
 
+import com.example.calculation.utils.CalculationConstant;
 import com.example.validator.Validator;
 
 import java.util.LinkedList;
@@ -19,9 +20,9 @@ public class PostfixConverter implements Converter {
     private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
 
     private Queue<String> output = new LinkedList<>();
-    
+
     private Stack<Character> operators = new Stack<>();
-    
+
     private StringBuilder number = new StringBuilder();
 
     private Validator infixValidator;
@@ -42,17 +43,29 @@ public class PostfixConverter implements Converter {
     private String convertInfixToPostfix(String infixExpression) {
         for (char character : infixExpression.toCharArray()) {
             if (!isWhitespace(character)) {
-                if (isDigit(character) || isDecimalSeparator(character)) {
-                    appendToNumber(character);
-                } else {
-                    addNumberToQueue();
-                    pushOperatorOnStack(character);
-                }
+                processCharacter(character);
             }
         }
         addNumberToQueue();
         addOperatorsFromStack();
         return getOutput();
+    }
+
+    private void processCharacter(char character) {
+        if (isDigit(character) || isDecimalSeparator(character)) {
+            appendToNumber(character);
+        } else if (isOperator(character)) {
+            addNumberToQueue();
+            pushOperatorOnStack(character);
+        } else if (isLeftParenthesis(character)) {
+            addNumberToQueue();
+            pushOnStack(character);
+        } else if (isRightParenthesis(character)) {
+            addNumberToQueue();
+            addFromStackUntilReachLeftParenthesis();
+        } else {
+            throw new IllegalArgumentException("Unrecognized character");
+        }
     }
 
     private void addOperatorsFromStack() {
@@ -77,37 +90,27 @@ public class PostfixConverter implements Converter {
         return isLeftParenthesis(character) || isRightParenthesis(character);
     }
 
-    private void pushOperatorOnStack(char character) {
-        if (!operators.isEmpty()) {
-            char topOperator = operators.peek();
-            if (operatorPriority(character) > operatorPriority(topOperator) || isLeftParenthesis(character)) {
-                pushOnStack(character);
-            } else {
-                if (isRightParenthesis(character)) {
-                    addFromStackUntilReachLeftParenthesis(topOperator);
-                    popFromStack();
-                } else {
-                    while (operatorPriority(character) <= operatorPriority(topOperator)) {
-                        addToQueue(popFromStack());
-                        if (!operators.isEmpty()) {
-                            topOperator = operators.peek();
-                        } else {
-                            break;
-                        }
-                    }
-                    pushOnStack(character);
-                }
-            }
-        } else {
-            pushOnStack(character);
-        }
+    private boolean isOperator(char character) {
+        return CalculationConstant.CALCULATION_SIGNS.contains(String.valueOf(character));
     }
 
-    private void addFromStackUntilReachLeftParenthesis(char topOperator) {
-        while (!isLeftParenthesis(topOperator)) {
-            addToQueue(popFromStack());
-            topOperator = operators.peek();
+    private void pushOperatorOnStack(char character) {
+        if (operators.isEmpty() || operatorPriority(character) > operatorPriority(operators.peek())) {
+            pushOnStack(character);
+        } else {
+            while (!operators.isEmpty() && operatorPriority(character) <= operatorPriority(operators.peek())) {
+                addToQueue(operators.pop());
+            }
+            pushOnStack(character);
         }
+
+    }
+
+    private void addFromStackUntilReachLeftParenthesis() {
+        while (!isLeftParenthesis(operators.peek())) {
+            addToQueue(popFromStack());
+        }
+        popFromStack();
     }
 
     private void pushOnStack(char operator) {
