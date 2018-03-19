@@ -70,7 +70,7 @@ public class PostfixConverter implements Converter {
 
     private void addOperatorsFromStack() {
         while (!operators.isEmpty()) {
-            addToQueue(popFromStack());
+            addToQueueTopOperatorFromStack();
         }
     }
 
@@ -94,23 +94,26 @@ public class PostfixConverter implements Converter {
         return CalculationConstant.CALCULATION_SIGNS.contains(String.valueOf(character));
     }
 
-    private void pushOperatorOnStack(char character) {
-        if (operators.isEmpty() || operatorPriority(character) > operatorPriority(operators.peek())) {
-            pushOnStack(character);
+    private void pushOperatorOnStack(char operator) {
+        if (operators.isEmpty() || operatorPriority(operator) > operatorPriority(operators.peek())) {
+            pushOnStack(operator);
         } else {
-            while (!operators.isEmpty() && operatorPriority(character) <= operatorPriority(operators.peek())) {
-                addToQueue(operators.pop());
+            while (!operators.isEmpty() && operatorPriority(operator) <= operatorPriority(operators.peek())) {
+                addToQueueTopOperatorFromStack();
             }
-            pushOnStack(character);
+            pushOnStack(operator);
         }
-
     }
 
     private void addFromStackUntilReachLeftParenthesis() {
         while (!isLeftParenthesis(operators.peek())) {
-            addToQueue(popFromStack());
+            addToQueueTopOperatorFromStack();
         }
         popFromStack();
+    }
+
+    private void addToQueueTopOperatorFromStack() {
+        addToQueue(popFromStack());
     }
 
     private void pushOnStack(char operator) {
