@@ -1,23 +1,16 @@
 package com.example.converter;
 
-import com.example.calculation.utils.CalculationConstant;
 import com.example.validator.Validator;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-import static com.example.calculation.utils.CalculationConstant.CALCULATION_TYPES;
-import static com.example.calculation.utils.CalculationConstant.ZERO_PRIORITY;
+import static com.example.calculation.utils.CalculationUtils.*;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 
 public class PostfixConverter implements Converter {
-
-    private static final char DECIMAL_SEPARATOR_CHARACTER = '.';
-    private static final char SPACE_CHARACTER = ' ';
-    private static final char LEFT_PARENTHESIS_CHARACTER = '(';
-    private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
 
     private Queue<String> output = new LinkedList<>();
 
@@ -36,7 +29,7 @@ public class PostfixConverter implements Converter {
         if (infixValidator.isValid(infixExpression)) {
             return convertInfixToPostfix(infixExpression);
         } else {
-            throw new IllegalArgumentException("Expression is invalid");
+            throw new IllegalArgumentException("Expression is invalid.");
         }
     }
 
@@ -64,41 +57,21 @@ public class PostfixConverter implements Converter {
             addNumberToQueue();
             addFromStackUntilReachLeftParenthesis();
         } else {
-            throw new IllegalArgumentException("Unrecognized character");
+            throw new IllegalArgumentException(String.format("%s is unrecognized character.", character));
         }
     }
 
     private void addOperatorsFromStack() {
-        while (!operators.isEmpty()) {
+        while (!stackIsEmpty()) {
             addToQueueTopOperatorFromStack();
         }
     }
 
-    private boolean isDecimalSeparator(char character) {
-        return character == DECIMAL_SEPARATOR_CHARACTER;
-    }
-
-    private boolean isLeftParenthesis(char character) {
-        return character == LEFT_PARENTHESIS_CHARACTER;
-    }
-
-    private boolean isRightParenthesis(char character) {
-        return character == RIGHT_PARENTHESIS_CHARACTER;
-    }
-
-    private boolean isParenthesis(char character) {
-        return isLeftParenthesis(character) || isRightParenthesis(character);
-    }
-
-    private boolean isOperator(char character) {
-        return CalculationConstant.CALCULATION_SIGNS.contains(String.valueOf(character));
-    }
-
     private void pushOperatorOnStack(char operator) {
-        if (operators.isEmpty() || operatorPriority(operator) > operatorPriority(operators.peek())) {
+        if (stackIsEmpty() || operatorPriority(operator) > operatorPriority(operators.peek())) {
             pushOnStack(operator);
         } else {
-            while (!operators.isEmpty() && operatorPriority(operator) <= operatorPriority(operators.peek())) {
+            while (!stackIsEmpty() && operatorPriority(operator) <= operatorPriority(operators.peek())) {
                 addToQueueTopOperatorFromStack();
             }
             pushOnStack(operator);
@@ -113,9 +86,13 @@ public class PostfixConverter implements Converter {
     }
 
     private void addToQueueTopOperatorFromStack() {
-        addToQueue(popFromStack());
+        addOperatorToQueue(popFromStack());
     }
 
+    private boolean stackIsEmpty() {
+        return operators.isEmpty();
+    }
+    
     private void pushOnStack(char operator) {
         operators.push(operator);
     }
@@ -142,8 +119,8 @@ public class PostfixConverter implements Converter {
         }
     }
 
-    private void addToQueue(char character) {
-        output.add(String.valueOf(character));
+    private void addOperatorToQueue(char operator) {
+        output.add(String.valueOf(operator));
     }
 
     private String getOutput() {
