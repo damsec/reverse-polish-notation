@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.Is.is;
 
 @RunWith(JUnitParamsRunner.class)
 public class PostfixConverterTest {
@@ -27,7 +28,7 @@ public class PostfixConverterTest {
     @Test
     public void should_ThrowIllegalArgumentException_If_InputExpressionIsInvalid() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Expression is invalid");
+        exception.expectMessage(is("Expression is invalid."));
 
         String invalidExpression = "";
         postfixConverter.convert(invalidExpression);

@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.Is.is;
 
 @RunWith(JUnitParamsRunner.class)
 public class PostfixEvaluatorTest {
@@ -61,7 +62,7 @@ public class PostfixEvaluatorTest {
     @Test
     public void should_ThrowArithmeticException_If_DivideByZero() {
         exception.expect(ArithmeticException.class);
-        exception.expectMessage("You can't divide by zero.");
+        exception.expectMessage(is("You can't divide by zero."));
 
         String divideByZeroPostfixExpression = "3 0 /";
         postfixEvaluator.evaluate(divideByZeroPostfixExpression);

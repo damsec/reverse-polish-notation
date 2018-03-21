@@ -6,19 +6,19 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 public class CalculationUtils {
 
     public static final Map<String, CalculationType> CALCULATION_TYPES = Arrays.stream(CalculationType.values())
-            .collect(toMap(CalculationType::getSign, Function.identity()));
+            .collect(toMap(CalculationType::getSign, identity()));
 
     public static final List<String> CALCULATION_SIGNS = Arrays.stream(CalculationType.values())
             .map(CalculationType::getSign)
-            .collect(Collectors.toList());
+            .collect(toList());
 
     public static final int ZERO_PRIORITY = 0;
 
