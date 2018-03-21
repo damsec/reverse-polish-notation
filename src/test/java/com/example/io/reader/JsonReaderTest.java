@@ -85,6 +85,6 @@ public class JsonReaderTest {
     }
     
     private String getAbsoluteFilePath(String fileName) {
-        return this.getClass().getClassLoader().getResource("json/" + fileName).getPath();
+        return this.getClass().getClassLoader().getResource("json/reader/" + fileName).getPath();
     }
 }
