@@ -37,11 +37,22 @@ public class JsonWriterTest {
     }
     
     @Test
-    public void temporaryFolder_Should_ContainsOneFile() {
-        try {
+    public void should_CreateOneFile_InTemporaryFolder() {
+            try {
             File folder = temporaryFolder.newFolder("temporary");
             jsonWriter.write(getGeneralResult(), folder.getPath());
             assertThat(folder.listFiles().length).isEqualTo(1);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Test
+    public void should_CreateJsonFileInTemporaryFolder_WithSpecificName() {
+        try {
+            File folder = temporaryFolder.newFolder("temporary");
+            jsonWriter.write(getGeneralResult(), folder.getPath());
+            assertThat(folder.listFiles()[0].getName()).isEqualTo(FILE_NAME);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -52,7 +63,7 @@ public class JsonWriterTest {
         try {
             File folder = temporaryFolder.newFolder("temporary");
             jsonWriter.write(getGeneralResult(), folder.getPath());
-            assertThat(getJsonStringFromTomporaryFile(folder.listFiles()[0])).isEqualTo(getJsonStringFromResource("result-20180321-110458.json"));
+            assertThat(getJsonStringFromTemporaryFile(folder.listFiles()[0])).isEqualTo(getJsonStringFromResource("result-20180321-110458.json"));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -82,7 +93,7 @@ public class JsonWriterTest {
         return generalResult;
     }
     
-    private String getJsonStringFromTomporaryFile(File file) {
+    private String getJsonStringFromTemporaryFile(File file) {
         JSONTokener jsonTokener = null;
         try {
             jsonTokener = new JSONTokener(new FileReader(file));
