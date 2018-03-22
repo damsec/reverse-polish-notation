@@ -28,17 +28,14 @@ public class JsonWriterTest {
     
     private FileNameGenerator fileNameGenerator = mock(FileNameGenerator.class);
     
+    private static final String FILE_NAME = "result-20180322-123456.json";
+    
     @Before
     public void setUp() {
         jsonWriter = new JsonWriter(fileNameGenerator);
-        when(fileNameGenerator.getFileName()).thenReturn("dff");
+        when(fileNameGenerator.getFileName()).thenReturn(FILE_NAME);
     }
-        
-//    @Test
-//    public void should_ReturnJsonAsString_If_() {
-//        assertThat(jsonWriter.getGeneralResultAsJsonString(getGeneralResult())).isEqualTo(getJsonStringFromResource());
-//    }
-
+    
     @Test
     public void temporaryFolder_Should_ContainsOneFile() {
         try {
@@ -51,14 +48,11 @@ public class JsonWriterTest {
     }
     
     @Test
-    public void should_CreateJsonFileInTemporaryFolder_() {
+    public void should_CreateJsonFileInTemporaryFolder_WithContentEqualToExampleFileContent() {
         try {
             File folder = temporaryFolder.newFolder("temporary");
             jsonWriter.write(getGeneralResult(), folder.getPath());
-            String s1 = getJsonStringFromTomporaryFile(folder.listFiles()[0]);
-            System.out.println(s1);
-            String s2 = getJsonStringFromResource("result-20180321-110458.json");
-            System.out.println(s2);
+            assertThat(getJsonStringFromTomporaryFile(folder.listFiles()[0])).isEqualTo(getJsonStringFromResource("result-20180321-110458.json"));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
