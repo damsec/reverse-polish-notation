@@ -1,0 +1,18 @@
+{
+    "creationDateTime": "2018-03-21T11:04:58.924",
+    "results": [
+        {
+            "infixExpression": "3*(4+5)",
+            "postfixExpression": "3 4 5 + *",
+            "calculationResult": 27.0
+        },
+        {
+            "infixExpression": "3/0",
+            "postfixExpression": "3 0 /",
+            "errorMessage": "You can't divide by zero."
+        }
+    ],
+    "totalExpressionsNumber": 2,
+    "successNumber": 1,
+    "errorNumber": 1
+}
