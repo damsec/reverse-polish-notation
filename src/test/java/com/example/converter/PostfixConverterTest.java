@@ -49,6 +49,21 @@ public class PostfixConverterTest {
     }
 
     @Test
+    @Parameters(method = "expressionsWithNegativeNumbers")
+    public void should_ConvertInfixExpression_WithNegativeNumbers(String infixExpression, String postfixExpression) {
+        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+    }
+
+    private Object[] expressionsWithNegativeNumbers() {
+        return new Object[]{
+                new Object[]{"-3+4", "-3 4 +"},
+                new Object[]{"3+-4", "3 -4 +"},
+                new Object[]{"(-3)+4", "-3 4 +"},
+                new Object[]{"3+(-4)", "3 -4 +"}
+        };
+    }
+
+    @Test
     public void should_ConvertInfixExpression_WithTwoAdditionOperators() {
         String infixExpression = "3+4+5";
         String postfixExpression = "3 4 + 5 +";
@@ -95,6 +110,7 @@ public class PostfixConverterTest {
                 new Object[]{"3+4*(5-6)", "3 4 5 6 - * +"},
                 new Object[]{"2^3^4", "2 3 ^ 4 ^"},
                 new Object[]{"2^(3^2)", "2 3 2 ^ ^"},
+                new Object[]{"3*-4/5--6*(-7)", "3 -4 * 5 / -6 -7 * -"},
                 new Object[]{"((2+7)/3+(14-3)*4)/2", "2 7 + 3 / 14 3 - 4 * + 2 /"},
                 new Object[]{"3*4^5/6-7*8^(9-10)", "3 4 5 ^ * 6 / 7 8 9 10 - ^ * -"}
         };

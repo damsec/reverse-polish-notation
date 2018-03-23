@@ -13,8 +13,6 @@ public class InfixValidator implements Validator {
 
         int leftParenthesesNumber = 0;
         int rightParenthesesNumber = 0;
-        boolean isPreviousCharacterOperator = false;
-        boolean isPreviousCharacterLeftParenthesis = false;
 
         for (int i = 0; i < infix.length(); i++) {
 
@@ -22,12 +20,6 @@ public class InfixValidator implements Validator {
 
             if (!isValidCharacter(character)) {
                 System.out.print(String.format("%s is invalid character. ", character));
-                return false;
-            }
-
-            // negative numbers are still not supported
-            if (isNegativeSign(character) && (isPreviousCharacterOperator || isPreviousCharacterLeftParenthesis || i == 0)) {
-                System.out.print("Negative numbers are not supported. ");
                 return false;
             }
 
@@ -42,9 +34,6 @@ public class InfixValidator implements Validator {
                     return false;
                 }
             }
-
-            isPreviousCharacterOperator = isOperator(character);
-            isPreviousCharacterLeftParenthesis = isLeftParenthesis(character);
         }
         return leftParenthesesNumber == rightParenthesesNumber;
     }

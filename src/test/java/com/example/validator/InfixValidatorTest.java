@@ -43,21 +43,6 @@ public class InfixValidatorTest {
     }
 
     @Test
-    @Parameters(method = "expressionsWithNegativeNumbers")
-    public void should_ReturnFalse_If_ExpressionContainsNegativeNumber(String invalidExpression) {
-        assertThat(infixValidator.isValid(invalidExpression)).isFalse();
-    }
-
-    private Object[] expressionsWithNegativeNumbers() {
-        return new Object[]{
-                "-3+4",
-                "3+-4",
-                "(-3)+4",
-                "3+(-4)"
-        };
-    }
-
-    @Test
     @Parameters(method = "validExpressions")
     public void should_ReturnTrue_If_ExpressionIsValid(String validExpression) {
         assertThat(infixValidator.isValid(validExpression)).isTrue();

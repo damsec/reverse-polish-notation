@@ -48,8 +48,8 @@ public class CalculationUtils {
         return NumberUtils.isCreatable(input);
     }
 
-    public static boolean isNegativeSign(char character) {
-        return character == NEGATIVE_SIGN_CHARACTER;
+    public static boolean isNegativeSign(char character, char previousCharacter) {
+        return character == NEGATIVE_SIGN_CHARACTER && (isOperator(previousCharacter) || isParenthesis(previousCharacter) || previousCharacter == Character.MIN_VALUE);
     }
 
     public static boolean isLeftParenthesis(char character) {

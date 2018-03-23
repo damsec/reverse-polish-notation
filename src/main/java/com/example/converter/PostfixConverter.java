@@ -34,18 +34,20 @@ public class PostfixConverter implements Converter {
     }
 
     private String convertInfixToPostfix(String infixExpression) {
+        char previousCharacter = Character.MIN_VALUE;
         for (char character : infixExpression.toCharArray()) {
             if (!isWhitespace(character)) {
-                processCharacter(character);
+                processCharacter(character, previousCharacter);
             }
+            previousCharacter = character;
         }
         addNumberToQueue();
         addOperatorsFromStack();
         return getOutput();
     }
 
-    private void processCharacter(char character) {
-        if (isDigit(character) || isDecimalSeparator(character)) {
+    private void processCharacter(char character, char previousCharacter) {
+        if (isDigit(character) || isDecimalSeparator(character) || isNegativeSign(character, previousCharacter)) {
             appendToNumber(character);
         } else if (isOperator(character)) {
             addNumberToQueue();

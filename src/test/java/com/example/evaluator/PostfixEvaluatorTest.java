@@ -79,8 +79,10 @@ public class PostfixEvaluatorTest {
                 new Object[]{"3 4 5 * +", 23},
                 new Object[]{"3 4 * 5 + 6 -", 11},
                 new Object[]{"3 4 5 6 - * +", -1},
+                new Object[]{"0.5 -2 ^", 4},
                 new Object[]{"2 3 ^ 4 ^", 4096},
                 new Object[]{"2 3 2 ^ ^", 512},
+                new Object[]{"3 -4 * 5 / -6 -7 * -", -44.4},
                 new Object[]{"2 7 + 3 / 14 3 - 4 * + 2 /", 23.5},
                 new Object[]{"3 4 5 ^ * 6 / 7 8 9 10 - ^ * -", 511.125}
         };
