@@ -5,15 +5,15 @@ import java.time.format.DateTimeFormatter;
 
 class FileNameGenerator {
 
-    String getFileName() {
+    static String getFileName() {
         return "result-" + getFormattedLocalDateTime() + ".json";
     }
 
-    private LocalDateTime getCurrentDateTime() {
+    static private LocalDateTime getCurrentDateTime() {
         return LocalDateTime.now();
     }
 
-    private String getFormattedLocalDateTime() {
+    static private String getFormattedLocalDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         return getCurrentDateTime().format(formatter);
     }
