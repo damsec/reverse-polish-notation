@@ -60,7 +60,7 @@ public class JsonReaderTest {
     @Test
     public void should_ThrowFileMissingException_If_FileDoesNotExist() {
         exception.expect(FileMissingException.class);
-        exception.expectMessage(is("File is missing."));
+        exception.expectMessage(is("Couldn't find file."));
         
         String missingFile = "FILE_NOT_EXIST";
         jsonReader.read(missingFile);

@@ -1,20 +1,10 @@
 package com.example.io.writer;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import static com.example.utils.DateTimeGenerator.getFormattedDateTime;
 
-class FileNameGenerator {
+public class FileNameGenerator {
 
-    static String getFileName() {
-        return "result-" + getFormattedLocalDateTime() + ".json";
-    }
-
-    static private LocalDateTime getCurrentDateTime() {
-        return LocalDateTime.now();
-    }
-
-    static private String getFormattedLocalDateTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-        return getCurrentDateTime().format(formatter);
+    public static String getFileName() {
+        return "result-" + getFormattedDateTime("yyyyMMdd-HHmmss") + ".json";
     }
 }

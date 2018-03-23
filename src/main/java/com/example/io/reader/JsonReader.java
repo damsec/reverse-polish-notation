@@ -54,7 +54,7 @@ public class JsonReader implements Reader {
         try {
             return new FileInputStream(filePath);
         } catch (FileNotFoundException exception) {
-            throw new FileMissingException("File is missing.");
+            throw new FileMissingException("Couldn't find file.");
         }
     }
 }
