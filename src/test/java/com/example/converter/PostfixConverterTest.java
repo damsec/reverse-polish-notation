@@ -92,6 +92,13 @@ public class PostfixConverterTest {
     }
 
     @Test
+    public void should_ConvertInfixExpression_WithCommaAsDecimalSeparator() {
+        String infixExpression = "3,1+4+,2+5,";
+        String postfixExpression = "3.1 4 + .2 + 5. +";
+        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+    }
+
+    @Test
     public void should_ConvertInfixExpression_WithParentheses() {
         String infixExpression = "3*(4+5)";
         String postfixExpression = "3 4 5 + *";

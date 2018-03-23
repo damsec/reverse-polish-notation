@@ -43,6 +43,12 @@ public class InfixValidatorTest {
     }
 
     @Test
+    public void should_ReturnTrue_If_ExpressionContainsDecimalNumbers() {
+        String invalidExpression = "3.4*5,6";
+        assertThat(infixValidator.isValid(invalidExpression)).isTrue();
+    }
+
+    @Test
     @Parameters(method = "validExpressions")
     public void should_ReturnTrue_If_ExpressionIsValid(String validExpression) {
         assertThat(infixValidator.isValid(validExpression)).isTrue();

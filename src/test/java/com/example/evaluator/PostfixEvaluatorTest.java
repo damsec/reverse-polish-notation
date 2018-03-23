@@ -77,6 +77,7 @@ public class PostfixEvaluatorTest {
     private Object[] postfixExpressionsWithDifferentOperators() {
         return new Object[]{
                 new Object[]{"3 4 5 * +", 23},
+                new Object[]{"3.4 5.6 *", 19.04},
                 new Object[]{"3 4 * 5 + 6 -", 11},
                 new Object[]{"3 4 5 6 - * +", -1},
                 new Object[]{"0.5 -2 ^", 4},

@@ -39,6 +39,6 @@ public class InfixValidator implements Validator {
     }
 
     private boolean isValidCharacter(char character) {
-        return String.valueOf(character).matches("[\\d\\s().]") || isOperator(character);
+        return String.valueOf(character).matches("[\\d\\s(),.]") || isOperator(character);
     }
 }

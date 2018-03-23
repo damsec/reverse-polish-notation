@@ -111,6 +111,7 @@ public class PostfixConverter implements Converter {
     }
 
     private void appendToNumber(char character) {
+        character = character == COMMA_CHARACTER ? FULL_STOP_CHARACTER : character;
         number.append(character);
     }
 

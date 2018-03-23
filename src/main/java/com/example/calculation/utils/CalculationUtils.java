@@ -24,11 +24,13 @@ public class CalculationUtils {
 
     public static final char SPACE_CHARACTER = ' ';
 
+    public static final char FULL_STOP_CHARACTER = '.';
+
+    public static final char COMMA_CHARACTER = ',';
+
     private static final char LEFT_PARENTHESIS_CHARACTER = '(';
 
     private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
-
-    private static final char DECIMAL_SEPARATOR_CHARACTER = '.';
 
     private static final char NEGATIVE_SIGN_CHARACTER = '-';
 
@@ -41,7 +43,7 @@ public class CalculationUtils {
     }
 
     public static boolean isDecimalSeparator(char character) {
-        return character == DECIMAL_SEPARATOR_CHARACTER;
+        return character == FULL_STOP_CHARACTER || character == COMMA_CHARACTER;
     }
 
     public static boolean isNumber(String input) {
