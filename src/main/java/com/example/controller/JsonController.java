@@ -5,8 +5,8 @@ import com.example.converter.PostfixConverter;
 import com.example.evaluator.Evaluator;
 import com.example.evaluator.PostfixEvaluator;
 import com.example.io.exception.FileMissingException;
-import com.example.io.reader.JsonReader;
-import com.example.io.reader.Reader;
+import com.example.io.reader.JsonExpressionReader;
+import com.example.io.reader.ExpressionReader;
 import com.example.io.writer.GeneralResultWriter;
 import com.example.io.writer.JsonGeneralResultWriter;
 import com.example.io.writer.mapper.GeneralResultMapper;
@@ -28,7 +28,7 @@ public class JsonController implements Controller {
 
     private static Converter postfixConverter = new PostfixConverter(new InfixValidator());
     private static Evaluator postfixEvaluator = new PostfixEvaluator();
-    private static Reader jsonReader = new JsonReader();
+    private static ExpressionReader jsonExpressionReader = new JsonExpressionReader();
     private static GeneralResultWriter generalResultWriter = new JsonGeneralResultWriter(new GeneralResultMapper());
     
     @Override
@@ -36,7 +36,7 @@ public class JsonController implements Controller {
 
         GeneralResult generalResult = new GeneralResult();
         List<Result> results = new ArrayList<>();
-        List<String> infixExpressions = jsonReader.read(inputFilePath);
+        List<String> infixExpressions = jsonExpressionReader.read(inputFilePath);
 
         for(String infixExpression : infixExpressions) {
             Result result = new Result();

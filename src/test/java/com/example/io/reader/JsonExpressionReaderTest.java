@@ -13,18 +13,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
-public class JsonReaderTest {
+public class JsonExpressionReaderTest {
     
     @Rule
     public ExpectedException exception = ExpectedException.none();
     
-    private JsonReader jsonReader;
+    private JsonExpressionReader jsonReader;
     
     private static final List<String> POSTFIX_EXPRESSIONS = Arrays.asList("2+2", "(2+2)*2", "((2+7)/3+(14-3)*4)/2");
 
     @Before
     public void setUp() {
-        jsonReader = new JsonReader();
+        jsonReader = new JsonExpressionReader();
     }
 
     @Test

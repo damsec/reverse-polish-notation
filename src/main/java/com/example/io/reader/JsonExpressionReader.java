@@ -15,7 +15,7 @@ import java.util.List;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 
-public class JsonReader implements Reader {
+public class JsonExpressionReader implements ExpressionReader {
 
     @Override
     public List<String> read(String filePath) {
