@@ -1,6 +1,8 @@
 package com.example.evaluator;
 
+import com.example.expression.PostfixExpression;
+
 public interface Evaluator {
 
-    double evaluate(String input);
+    double evaluate(PostfixExpression input);
 }

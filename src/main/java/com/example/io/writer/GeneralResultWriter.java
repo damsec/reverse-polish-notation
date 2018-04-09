@@ -1,6 +1,6 @@
 package com.example.io.writer;
 
-import com.example.model.GeneralResult;
+import com.example.result.GeneralResult;
 
 public interface GeneralResultWriter {
 

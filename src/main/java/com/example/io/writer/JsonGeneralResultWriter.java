@@ -2,7 +2,7 @@ package com.example.io.writer;
 
 import com.example.io.exception.JsonIOException;
 import com.example.io.writer.mapper.GeneralResultMapper;
-import com.example.model.GeneralResult;
+import com.example.result.GeneralResult;
 
 import java.io.FileWriter;
 import java.io.IOException;

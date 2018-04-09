@@ -1,6 +1,8 @@
 package com.example.converter;
 
+import com.example.expression.PostfixExpression;
+
 public interface Converter {
 
-    String convert(String input);
+    PostfixExpression convert(String input);
 }

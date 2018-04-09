@@ -3,29 +3,32 @@ package com.example.evaluator;
 import com.example.calculation.Calculation;
 import com.example.calculation.CalculationFactory;
 import com.example.calculation.CalculationType;
+import com.example.expression.ExpressionElement;
+import com.example.expression.PostfixExpression;
 
 import java.util.Stack;
 
-import static com.example.calculation.utils.CalculationUtils.*;
+import static com.example.calculation.utils.CalculationUtils.CALCULATION_TYPES;
+import static com.example.expression.ElementType.CONSTANT;
+import static com.example.expression.ElementType.OPERATOR;
 import static java.lang.Double.parseDouble;
+
 
 public class PostfixEvaluator implements Evaluator {
     
     private Stack<Double> operands = new Stack<>();
 
     @Override
-    public double evaluate(String postfixExpression) {
-        String[] postfixElements = getPostfixExpressionAsArray(postfixExpression);
-        evaluatePostfixExpression(postfixElements);
+    public double evaluate(PostfixExpression postfixExpression) {
+//        String[] postfixElements = getPostfixExpressionAsArray(postfixExpression);
+        evaluatePostfixExpression(postfixExpression);
         return popFromStack();
     }
 
-    private String[] getPostfixExpressionAsArray(String postfixExpression) {
-        return postfixExpression.split(String.valueOf(SPACE_CHARACTER));
-    }
 
-    private void evaluatePostfixExpression(String[] postfixElements) {
-        for (String element : postfixElements) {
+
+    private void evaluatePostfixExpression(PostfixExpression postfixElements) {
+        for (ExpressionElement element : postfixElements.getElements()) {
             if (isNumber(element)) {
                 pushOnStack(element);
             } else if (isOperator(element)) {
@@ -40,8 +43,8 @@ public class PostfixEvaluator implements Evaluator {
         operands.push(number);
     }
 
-    private void pushOnStack(String element) {
-        double number = parseDouble(element);
+    private void pushOnStack(ExpressionElement element) {
+        double number = parseDouble(element.getValue());
         pushOnStack(number);
     }
 
@@ -49,8 +52,8 @@ public class PostfixEvaluator implements Evaluator {
         return operands.pop();
     }
 
-    private void pushCalculationResultOnStack(String operator) {
-        double result = calculate(operator);
+    private void pushCalculationResultOnStack(ExpressionElement element) {
+        double result = calculate(element.getValue());
         pushOnStack(result);
     }
 
@@ -73,5 +76,13 @@ public class PostfixEvaluator implements Evaluator {
         double firstNumber = popFromStack();
         double secondNumber = popFromStack();
         return new double[]{secondNumber, firstNumber};
+    }
+    
+    private boolean isNumber(ExpressionElement element) {
+        return element.getType() == CONSTANT;
+    }
+    
+    private boolean isOperator(ExpressionElement element) {
+        return element.getType() == OPERATOR;
     }
 }

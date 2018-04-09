@@ -1,18 +1,20 @@
 package com.example.converter;
 
+import com.example.expression.ExpressionElement;
+import com.example.expression.PostfixExpression;
 import com.example.validator.Validator;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
 import static com.example.calculation.utils.CalculationUtils.*;
+import static com.example.expression.ElementType.CONSTANT;
+import static com.example.expression.ElementType.OPERATOR;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 
 public class PostfixConverter implements Converter {
 
-    private Queue<String> output = new LinkedList<>();
+    private PostfixExpression postfixExpression = new PostfixExpression();
 
     private Stack<Character> operators = new Stack<>();
 
@@ -25,15 +27,15 @@ public class PostfixConverter implements Converter {
     }
 
     @Override
-    public String convert(String infixExpression) {
+    public PostfixExpression convert(String infixExpression) {
         if (infixValidator.isValid(infixExpression)) {
             return convertInfixToPostfix(infixExpression);
         } else {
-            throw new IllegalArgumentException("Expression is invalid.");
+            throw new IllegalArgumentException("Infix expression is invalid.");
         }
     }
 
-    private String convertInfixToPostfix(String infixExpression) {
+    private PostfixExpression convertInfixToPostfix(String infixExpression) {
         char previousCharacter = Character.MIN_VALUE;
         for (char character : infixExpression.toCharArray()) {
             if (!isWhitespace(character)) {
@@ -43,7 +45,7 @@ public class PostfixConverter implements Converter {
         }
         addNumberToQueue();
         addOperatorsFromStack();
-        return getOutput();
+        return postfixExpression;
     }
 
     private void processCharacter(char character, char previousCharacter) {
@@ -94,7 +96,7 @@ public class PostfixConverter implements Converter {
     private boolean stackIsEmpty() {
         return operators.isEmpty();
     }
-    
+
     private void pushOnStack(char operator) {
         operators.push(operator);
     }
@@ -117,20 +119,12 @@ public class PostfixConverter implements Converter {
 
     private void addNumberToQueue() {
         if (number.length() > 0) {
-            output.add(number.toString());
+            postfixExpression.getElements().add(new ExpressionElement(CONSTANT, number.toString()));
             number = new StringBuilder();
         }
     }
 
     private void addOperatorToQueue(char operator) {
-        output.add(String.valueOf(operator));
-    }
-
-    private String getOutput() {
-        StringBuilder result = new StringBuilder();
-        for (String element : output) {
-            result.append(element).append(SPACE_CHARACTER);
-        }
-        return result.toString().trim();
+        postfixExpression.getElements().add(new ExpressionElement(OPERATOR, String.valueOf(operator)));
     }
 }

@@ -28,7 +28,7 @@ public class PostfixConverterTest {
     @Test
     public void should_ThrowIllegalArgumentException_If_InputExpressionIsInvalid() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage(is("Expression is invalid."));
+        exception.expectMessage(is("Infix expression is invalid."));
 
         String invalidExpression = "";
         postfixConverter.convert(invalidExpression);
@@ -38,20 +38,20 @@ public class PostfixConverterTest {
     public void should_ConvertInfixExpression_WithOneAdditionOperator() {
         String infixExpression = "3+4";
         String postfixExpression = "3 4 +";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithOneSubtractionOperator() {
         String infixExpression = "3-4";
         String postfixExpression = "3 4 -";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     @Parameters(method = "expressionsWithNegativeNumbers")
     public void should_ConvertInfixExpression_WithNegativeNumbers(String infixExpression, String postfixExpression) {
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     private Object[] expressionsWithNegativeNumbers() {
@@ -67,48 +67,48 @@ public class PostfixConverterTest {
     public void should_ConvertInfixExpression_WithTwoAdditionOperators() {
         String infixExpression = "3+4+5";
         String postfixExpression = "3 4 + 5 +";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithTwoSubtractionOperators() {
         String infixExpression = "3-4-5";
         String postfixExpression = "3 4 - 5 -";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithWhitespaces() {
         String infixExpression = " 3 +    4+5 ";
         String postfixExpression = "3 4 + 5 +";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithDecimalNumbers() {
         String infixExpression = "3.1+4+.2+5.";
         String postfixExpression = "3.1 4 + .2 + 5. +";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithCommaAsDecimalSeparator() {
         String infixExpression = "3,1+4+,2+5,";
         String postfixExpression = "3.1 4 + .2 + 5. +";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithParentheses() {
         String infixExpression = "3*(4+5)";
         String postfixExpression = "3 4 5 + *";
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     @Parameters(method = "infixExpressionsWithDifferentOperators")
     public void should_ConvertInfixExpression_WithDifferentOperators(String infixExpression, String postfixExpression) {
-        assertThat(postfixConverter.convert(infixExpression)).isEqualTo(postfixExpression);
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     private Object[] infixExpressionsWithDifferentOperators() {

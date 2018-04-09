@@ -1,7 +1,7 @@
 package com.example.io.writer.mapper;
 
-import com.example.model.GeneralResult;
-import com.example.model.Result;
+import com.example.result.GeneralResult;
+import com.example.result.Result;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;

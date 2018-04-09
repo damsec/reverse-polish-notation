@@ -4,14 +4,15 @@ import com.example.converter.Converter;
 import com.example.converter.PostfixConverter;
 import com.example.evaluator.Evaluator;
 import com.example.evaluator.PostfixEvaluator;
+import com.example.expression.PostfixExpression;
 import com.example.io.exception.FileMissingException;
 import com.example.io.reader.JsonExpressionReader;
 import com.example.io.reader.ExpressionReader;
 import com.example.io.writer.GeneralResultWriter;
 import com.example.io.writer.JsonGeneralResultWriter;
 import com.example.io.writer.mapper.GeneralResultMapper;
-import com.example.model.GeneralResult;
-import com.example.model.Result;
+import com.example.result.GeneralResult;
+import com.example.result.Result;
 import com.example.validator.InfixValidator;
 
 import java.util.ArrayList;
@@ -46,8 +47,8 @@ public class JsonController implements Controller {
             System.out.printf("%d. %s = ", totalCount, infixExpression);
             
             try {
-                String postfixExpression = postfixConverter.convert(infixExpression);
-                result.setPostfixExpression(postfixExpression);
+                PostfixExpression postfixExpression = postfixConverter.convert(infixExpression);
+                result.setPostfixExpression(postfixExpression.toString());
                 
                 double calculationResult = postfixEvaluator.evaluate(postfixExpression);
                 result.setCalculationResult(calculationResult);

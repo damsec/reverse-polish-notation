@@ -1,6 +1,6 @@
 package com.example.io.writer.mapper;
 
-import com.example.model.GeneralResult;
+import com.example.result.GeneralResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
