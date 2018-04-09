@@ -15,18 +15,15 @@ import static java.lang.Double.parseDouble;
 
 
 public class PostfixEvaluator implements Evaluator {
-    
+
     private Stack<Double> operands = new Stack<>();
 
     @Override
     public double evaluate(PostfixExpression postfixExpression) {
-//        String[] postfixElements = getPostfixExpressionAsArray(postfixExpression);
         evaluatePostfixExpression(postfixExpression);
         return popFromStack();
     }
-
-
-
+    
     private void evaluatePostfixExpression(PostfixExpression postfixElements) {
         for (ExpressionElement element : postfixElements.getElements()) {
             if (isNumber(element)) {
@@ -77,11 +74,11 @@ public class PostfixEvaluator implements Evaluator {
         double secondNumber = popFromStack();
         return new double[]{secondNumber, firstNumber};
     }
-    
+
     private boolean isNumber(ExpressionElement element) {
         return element.getType() == CONSTANT;
     }
-    
+
     private boolean isOperator(ExpressionElement element) {
         return element.getType() == OPERATOR;
     }
