@@ -1,7 +1,6 @@
 package com.example.calculation.utils;
 
 import com.example.calculation.CalculationType;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,10 +43,6 @@ public class CalculationUtils {
 
     public static boolean isDecimalSeparator(char character) {
         return character == FULL_STOP_CHARACTER || character == COMMA_CHARACTER;
-    }
-
-    public static boolean isNumber(String input) {
-        return NumberUtils.isCreatable(input);
     }
 
     public static boolean isNegativeSign(char character, char previousCharacter) {
