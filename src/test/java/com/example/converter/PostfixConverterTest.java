@@ -122,4 +122,25 @@ public class PostfixConverterTest {
                 new Object[]{"3*4^5/6-7*8^(9-10)", "3 4 5 ^ * 6 / 7 8 9 10 - ^ * -"}
         };
     }
+
+    @Test
+    public void should_ConvertInfixExpression_WithVariablesAndSingleOperator() {
+        String infixExpression = "x+yz";
+        String postfixExpression = "x yz +";
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
+    }
+
+    @Test
+    public void should_ConvertInfixExpression_WithVariablesAndMultipleOperators() {
+        String infixExpression = "2x+1322*yz";
+        String postfixExpression = "2x 1322 yz * +";
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
+    }
+
+    @Test
+    public void should_ConvertInfixExpression_WithVariablesAndMultipleOperatorsAndParentheses() {
+        String infixExpression = "2x + 1322 * (123 + yz)";
+        String postfixExpression = "2x 1322 123 yz + * +";
+        assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
+    }
 }

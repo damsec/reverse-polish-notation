@@ -18,7 +18,7 @@ public class PostfixConverter implements Converter {
 
     private Stack<Character> operators = new Stack<>();
 
-    private StringBuilder number = new StringBuilder();
+    private StringBuilder operand = new StringBuilder();
 
     private Validator infixValidator;
 
@@ -49,7 +49,7 @@ public class PostfixConverter implements Converter {
     }
 
     private void processCharacter(char character, char previousCharacter) {
-        if (isDigit(character) || isDecimalSeparator(character) || isNegativeSign(character, previousCharacter)) {
+        if (isDigit(character) || isDecimalSeparator(character) || isVariable(character) || isNegativeSign(character, previousCharacter)) {
             appendToNumber(character);
         } else if (isOperator(character)) {
             addNumberToQueue();
@@ -114,13 +114,13 @@ public class PostfixConverter implements Converter {
 
     private void appendToNumber(char character) {
         character = character == COMMA_CHARACTER ? FULL_STOP_CHARACTER : character;
-        number.append(character);
+        operand.append(character);
     }
 
     private void addNumberToQueue() {
-        if (number.length() > 0) {
-            postfixExpression.getElements().add(new ExpressionElement(CONSTANT, number.toString()));
-            number = new StringBuilder();
+        if (operand.length() > 0) {
+            postfixExpression.getElements().add(new ExpressionElement(CONSTANT, operand.toString()));
+            operand = new StringBuilder();
         }
     }
 

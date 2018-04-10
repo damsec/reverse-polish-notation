@@ -41,6 +41,10 @@ public class CalculationUtils {
         return isOperator(String.valueOf(character));
     }
 
+    public static boolean isVariable(char character) {
+        return Character.isAlphabetic(character);
+    }
+
     public static boolean isDecimalSeparator(char character) {
         return character == FULL_STOP_CHARACTER || character == COMMA_CHARACTER;
     }
