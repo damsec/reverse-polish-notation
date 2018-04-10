@@ -31,12 +31,6 @@ public class InfixValidatorTest {
     }
 
     @Test
-    public void should_ReturnFalse_If_ExpressionContainsInvalidCharacter() {
-        String invalidExpression = "3+x";
-        assertThat(infixValidator.isValid(invalidExpression)).isFalse();
-    }
-
-    @Test
     @Parameters({"(3+4", "3+4)"})
     public void should_ReturnFalse_If_NumberOfLeftAndRightParenthesesIsDifferent(String invalidExpression) {
         assertThat(infixValidator.isValid(invalidExpression)).isFalse();

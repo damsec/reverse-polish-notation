@@ -24,8 +24,8 @@ public class PostfixExpression {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        for(ExpressionElement element : elements) {
-            output.append(element).append(SPACE_CHARACTER);
+        for (ExpressionElement element : elements) {
+            output.append(element.getElementValue()).append(SPACE_CHARACTER);
         }
         return output.toString().trim();
     }

@@ -23,7 +23,7 @@ public class PostfixEvaluator implements Evaluator {
         evaluatePostfixExpression(postfixExpression);
         return popFromStack();
     }
-    
+
     private void evaluatePostfixExpression(PostfixExpression postfixElements) {
         for (ExpressionElement element : postfixElements.getElements()) {
             if (isNumber(element)) {
@@ -41,7 +41,7 @@ public class PostfixEvaluator implements Evaluator {
     }
 
     private void pushOnStack(ExpressionElement element) {
-        double number = parseDouble(element.getValue());
+        double number = parseDouble(element.getElementValue());
         pushOnStack(number);
     }
 
@@ -50,7 +50,7 @@ public class PostfixEvaluator implements Evaluator {
     }
 
     private void pushCalculationResultOnStack(ExpressionElement element) {
-        double result = calculate(element.getValue());
+        double result = calculate(element.getElementValue());
         pushOnStack(result);
     }
 

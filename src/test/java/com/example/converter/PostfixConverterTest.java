@@ -87,14 +87,14 @@ public class PostfixConverterTest {
     @Test
     public void should_ConvertInfixExpression_WithDecimalNumbers() {
         String infixExpression = "3.1+4+.2+5.";
-        String postfixExpression = "3.1 4 + .2 + 5. +";
+        String postfixExpression = "3.1 4 + 0.2 + 5 +";
         assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 
     @Test
     public void should_ConvertInfixExpression_WithCommaAsDecimalSeparator() {
         String infixExpression = "3,1+4+,2+5,";
-        String postfixExpression = "3.1 4 + .2 + 5. +";
+        String postfixExpression = "3.1 4 + 0.2 + 5 +";
         assertThat(postfixConverter.convert(infixExpression).toString()).isEqualTo(postfixExpression);
     }
 

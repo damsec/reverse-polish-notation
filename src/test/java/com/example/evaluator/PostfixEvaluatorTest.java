@@ -1,6 +1,5 @@
 package com.example.evaluator;
 
-import com.example.expression.ElementType;
 import com.example.expression.ExpressionElement;
 import com.example.expression.PostfixExpression;
 import junitparams.JUnitParamsRunner;
@@ -16,6 +15,8 @@ import java.util.Queue;
 
 import static com.example.calculation.utils.CalculationUtils.SPACE_CHARACTER;
 import static com.example.calculation.utils.CalculationUtils.isOperator;
+import static com.example.expression.ElementType.CONSTANT;
+import static com.example.expression.ElementType.OPERATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -111,11 +112,15 @@ public class PostfixEvaluatorTest {
         String[] postfixElements = getPostfixElements(postfixExpression);
 
         for (String element : postfixElements) {
+            ExpressionElement expressionElement = new ExpressionElement();
             if (isOperator(element)) {
-                elements.add(new ExpressionElement(ElementType.OPERATOR, element));
+                expressionElement.setVariable(element);
+                expressionElement.setType(OPERATOR);
             } else {
-                elements.add(new ExpressionElement(ElementType.CONSTANT, element));
+                expressionElement.setNumericValue(Double.parseDouble(element));
+                expressionElement.setType(CONSTANT);
             }
+            elements.add(expressionElement);
         }
         return elements;
     }
