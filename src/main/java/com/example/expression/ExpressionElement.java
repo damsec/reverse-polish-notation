@@ -1,5 +1,7 @@
 package com.example.expression;
 
+import java.util.Objects;
+
 import static java.util.Objects.isNull;
 
 public class ExpressionElement {
@@ -49,5 +51,24 @@ public class ExpressionElement {
 
     private boolean isInteger(double value) {
         return value % 1 == 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ExpressionElement element = (ExpressionElement) o;
+        return Objects.equals(numericValue, element.numericValue) &&
+                Objects.equals(variable, element.variable) &&
+                type == element.type;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpressionElement{" +
+                "numericValue=" + numericValue +
+                ", variable='" + variable + '\'' +
+                ", type=" + type +
+                '}';
     }
 }
