@@ -18,14 +18,14 @@ public class PostfixExpression {
         this.elements = elements;
     }
 
-    public String getValue() {
+    public String getExpressionValue() {
         StringBuilder output = new StringBuilder();
         for (ExpressionElement element : elements) {
             output.append(element.getElementValue()).append(SPACE_CHARACTER);
         }
         return output.toString().trim();
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
