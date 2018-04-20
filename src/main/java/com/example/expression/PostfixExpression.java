@@ -6,22 +6,32 @@ import java.util.Queue;
 
 import static com.example.calculation.utils.CalculationUtils.SPACE_CHARACTER;
 
-public class PostfixExpression {
+public class PostfixExpression implements Expression {
 
-    private Queue<ExpressionElement> elements = new LinkedList<>();
-
-    public Queue<ExpressionElement> getElements() {
+    private Queue<PostfixElement> elements = new LinkedList<>();
+    private InfixExpression infixExpression;
+    
+    public Queue<PostfixElement> getElements() {
         return elements;
     }
 
-    public void setElements(Queue<ExpressionElement> elements) {
+    public void setElements(Queue<PostfixElement> elements) {
         this.elements = elements;
     }
 
-    public String getExpressionValue() {
+    public InfixExpression getInfixExpression() {
+        return infixExpression;
+    }
+
+    public void setInfixExpression(InfixExpression infixExpression) {
+        this.infixExpression = infixExpression;
+    }
+
+    @Override
+    public String getExpression() {
         StringBuilder output = new StringBuilder();
-        for (ExpressionElement element : elements) {
-            output.append(element.getElementValue()).append(SPACE_CHARACTER);
+        for (PostfixElement element : elements) {
+            output.append(element.getValue()).append(SPACE_CHARACTER);
         }
         return output.toString().trim();
     }

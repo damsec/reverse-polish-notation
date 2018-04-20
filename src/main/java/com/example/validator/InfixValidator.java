@@ -19,7 +19,6 @@ public class InfixValidator implements Validator {
             char character = infix.charAt(i);
 
             if (!isValidCharacter(character)) {
-                System.out.print(String.format("%s is invalid character. ", character));
                 return false;
             }
 
@@ -30,7 +29,6 @@ public class InfixValidator implements Validator {
             if (isRightParenthesis(character)) {
                 rightParenthesesNumber++;
                 if (rightParenthesesNumber > leftParenthesesNumber) {
-                    System.out.print("Left parenthesis is missing. ");
                     return false;
                 }
             }

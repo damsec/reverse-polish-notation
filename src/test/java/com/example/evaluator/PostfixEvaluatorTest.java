@@ -1,6 +1,6 @@
 package com.example.evaluator;
 
-import com.example.expression.ExpressionElement;
+import com.example.expression.PostfixElement;
 import com.example.expression.PostfixExpression;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -106,21 +106,21 @@ public class PostfixEvaluatorTest {
         return postfixEvaluator.evaluate(expression);
     }
 
-    private Queue<ExpressionElement> convertPostfixToQueue(String postfixExpression) {
-        Queue<ExpressionElement> elements = new LinkedList<>();
+    private Queue<PostfixElement> convertPostfixToQueue(String postfixExpression) {
+        Queue<PostfixElement> elements = new LinkedList<>();
 
         String[] postfixElements = getPostfixElements(postfixExpression);
 
         for (String element : postfixElements) {
-            ExpressionElement expressionElement = new ExpressionElement();
+            PostfixElement postfixElement = new PostfixElement();
             if (isOperator(element)) {
-                expressionElement.setVariable(element);
-                expressionElement.setType(OPERATOR);
+                postfixElement.setValue(element);
+                postfixElement.setType(OPERATOR);
             } else {
-                expressionElement.setNumericValue(Double.parseDouble(element));
-                expressionElement.setType(CONSTANT);
+                postfixElement.setValue(element);
+                postfixElement.setType(CONSTANT);
             }
-            elements.add(expressionElement);
+            elements.add(postfixElement);
         }
         return elements;
     }

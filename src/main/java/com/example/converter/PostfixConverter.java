@@ -1,6 +1,7 @@
 package com.example.converter;
 
-import com.example.expression.ExpressionElement;
+import com.example.expression.InfixExpression;
+import com.example.expression.PostfixElement;
 import com.example.expression.PostfixExpression;
 import com.example.validator.Validator;
 
@@ -10,19 +11,17 @@ import static com.example.calculation.utils.CalculationUtils.*;
 import static com.example.expression.ElementType.*;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
-import static java.lang.Double.parseDouble;
+import static java.util.Objects.isNull;
 
-public class PostfixConverter implements Converter {
+public class PostfixConverter implements Converter<InfixExpression, PostfixExpression> {
 
-    private PostfixExpression postfixExpression = new PostfixExpression();
-
-    private ExpressionElement expressionElement = new ExpressionElement();
+    private PostfixElement postfixElement = new PostfixElement();
 
     private Stack<Character> operators = new Stack<>();
 
-    private StringBuilder numericPart = new StringBuilder();
+    private StringBuilder number = new StringBuilder();
 
-    private StringBuilder variablePart = new StringBuilder();
+    private StringBuilder variable = new StringBuilder();
 
     private Validator infixValidator;
 
@@ -31,81 +30,83 @@ public class PostfixConverter implements Converter {
     }
 
     @Override
-    public PostfixExpression convert(String infixExpression) {
-        if (infixValidator.isValid(infixExpression)) {
+    public PostfixExpression convert(InfixExpression infixExpression) {
+        if (infixValidator.isValid(infixExpression.getExpression())) {
             return convertInfixToPostfix(infixExpression);
         } else {
             throw new IllegalArgumentException("Infix expression is invalid.");
         }
     }
 
-    private PostfixExpression convertInfixToPostfix(String infixExpression) {
+    private PostfixExpression convertInfixToPostfix(InfixExpression infixExpression) {
         char previousCharacter = Character.MIN_VALUE;
-        for (char character : infixExpression.toCharArray()) {
+        PostfixExpression postfixExpression = new PostfixExpression();
+        for (char character : infixExpression.getExpression().toCharArray()) {
             if (!isWhitespace(character)) {
-                processCharacter(character, previousCharacter);
+                processCharacter(postfixExpression, character, previousCharacter);
             }
             previousCharacter = character;
         }
-        addExpressionToQueue();
-        addOperatorsFromStack();
+        addOperandToQueue(postfixExpression);
+        addOperatorsFromStack(postfixExpression);
+        postfixExpression.setInfixExpression(infixExpression);
         return postfixExpression;
     }
 
-    private void processCharacter(char character, char previousCharacter) {
+    private void processCharacter(PostfixExpression postfixExpression, char character, char previousCharacter) {
         if (isDigit(character) || isDecimalSeparator(character) || isNegativeSign(character, previousCharacter)) {
-            appendToNumber(character);
+            appendToNumbers(character);
         } else if (isVariable(character)) {
-            appendToVariable(character);
+            appendToVariables(character);
         } else if (isOperator(character)) {
-            addExpressionToQueue();
-            pushOperatorOnStack(character);
+            addOperandToQueue(postfixExpression);
+            pushOperatorOnStack(postfixExpression, character);
         } else if (isLeftParenthesis(character)) {
             pushOnStack(character);
         } else if (isRightParenthesis(character)) {
-            addExpressionToQueue();
-            addFromStackUntilReachLeftParenthesis();
+            addOperandToQueue(postfixExpression);
+            addFromStackUntilReachLeftParenthesis(postfixExpression);
         } else {
             throw new IllegalArgumentException(String.format("%s is unrecognized character.", character));
         }
     }
 
     private void addNumberToElement() {
-        expressionElement.setNumericValue(parseDouble(numericPart.toString()));
-        numericPart = new StringBuilder();
+        postfixElement.setValue(number.toString());
+        number = new StringBuilder();
     }
 
     private void addVariableToElement() {
-        expressionElement.setVariable(variablePart.toString());
-        variablePart = new StringBuilder();
+        postfixElement.setValue(variable.toString());
+        variable = new StringBuilder();
     }
 
-    private void addOperatorsFromStack() {
+    private void addOperatorsFromStack(PostfixExpression postfixExpression) {
         while (!stackIsEmpty()) {
-            addToQueueTopOperatorFromStack();
+            addToQueueTopOperatorFromStack(postfixExpression);
         }
     }
 
-    private void pushOperatorOnStack(char operator) {
+    private void pushOperatorOnStack(PostfixExpression postfixExpression, char operator) {
         if (stackIsEmpty() || operatorPriority(operator) > operatorPriority(operators.peek())) {
             pushOnStack(operator);
         } else {
             while (!stackIsEmpty() && operatorPriority(operator) <= operatorPriority(operators.peek())) {
-                addToQueueTopOperatorFromStack();
+                addToQueueTopOperatorFromStack(postfixExpression);
             }
             pushOnStack(operator);
         }
     }
 
-    private void addFromStackUntilReachLeftParenthesis() {
+    private void addFromStackUntilReachLeftParenthesis(PostfixExpression postfixExpression) {
         while (!isLeftParenthesis(operators.peek())) {
-            addToQueueTopOperatorFromStack();
+            addToQueueTopOperatorFromStack(postfixExpression);
         }
         popFromStack();
     }
 
-    private void addToQueueTopOperatorFromStack() {
-        addOperatorToQueue(popFromStack());
+    private void addToQueueTopOperatorFromStack(PostfixExpression postfixExpression) {
+        addOperatorToQueue(postfixExpression, popFromStack());
     }
 
     private boolean stackIsEmpty() {
@@ -127,34 +128,34 @@ public class PostfixConverter implements Converter {
         return CALCULATION_TYPES.get(String.valueOf(operator)).getPriority();
     }
 
-    private void appendToNumber(char character) {
+    private void appendToNumbers(char character) {
         character = character == COMMA_CHARACTER ? FULL_STOP_CHARACTER : character;
-        numericPart.append(character);
+        number.append(character);
     }
 
-    private void appendToVariable(char character) {
-        variablePart.append(character);
+    private void appendToVariables(char character) {
+        variable.append(character);
     }
 
-    private void addExpressionToQueue() {
-        if (numericPart.length() > 0) {
+    private void addOperandToQueue(PostfixExpression postfixExpression) {
+        if (number.length() > 0) {
             addNumberToElement();
-            expressionElement.setType(CONSTANT);
+            postfixElement.setType(CONSTANT);
         }
-        if (variablePart.length() > 0) {
+        if (variable.length() > 0) {
             addVariableToElement();
-            expressionElement.setType(VARIABLE);
+            postfixElement.setType(VARIABLE);
         }
-        if (!expressionElement.getElementValue().isEmpty()) {
-            postfixExpression.getElements().add(expressionElement);
-            expressionElement = new ExpressionElement();
+        if (!isNull(postfixElement.getValue())) {
+            postfixExpression.getElements().add(postfixElement);
+            postfixElement = new PostfixElement();
         }
     }
 
-    private void addOperatorToQueue(char operator) {
-        expressionElement.setVariable(String.valueOf(operator));
-        expressionElement.setType(OPERATOR);
-        postfixExpression.getElements().add(expressionElement);
-        expressionElement = new ExpressionElement();
+    private void addOperatorToQueue(PostfixExpression postfixExpression, char operator) {
+        postfixElement.setValue(String.valueOf(operator));
+        postfixElement.setType(OPERATOR);
+        postfixExpression.getElements().add(postfixElement);
+        postfixElement = new PostfixElement();
     }
 }

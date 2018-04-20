@@ -2,7 +2,7 @@ package com.example.io.reader;
 
 import java.util.List;
 
-public interface ExpressionReader {
+public interface ExpressionReader<T> {
 
-    List<String> read(String filePath);
+    List<T> read(String filePath);
 }

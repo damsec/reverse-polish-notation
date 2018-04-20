@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Character.isAlphabetic;
+import static java.lang.Character.isDigit;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -15,7 +17,7 @@ public class CalculationUtils {
     public static final Map<String, CalculationType> CALCULATION_TYPES = Arrays.stream(CalculationType.values())
             .collect(toMap(CalculationType::getSign, identity()));
 
-    public static final List<String> CALCULATION_SIGNS = Arrays.stream(CalculationType.values())
+    private static final List<String> CALCULATION_SIGNS = Arrays.stream(CalculationType.values())
             .map(CalculationType::getSign)
             .collect(toList());
 
@@ -42,7 +44,7 @@ public class CalculationUtils {
     }
 
     public static boolean isVariable(char character) {
-        return Character.isAlphabetic(character);
+        return isAlphabetic(character) || isDigit(character);
     }
 
     public static boolean isDecimalSeparator(char character) {
@@ -51,6 +53,10 @@ public class CalculationUtils {
 
     public static boolean isNegativeSign(char character, char previousCharacter) {
         return character == NEGATIVE_SIGN_CHARACTER && (isOperator(previousCharacter) || isParenthesis(previousCharacter) || previousCharacter == Character.MIN_VALUE);
+    }
+    
+    public static boolean isNumber(char character, char previousCharacter) {
+        return isDigit(character) && !isVariable(previousCharacter);
     }
 
     public static boolean isLeftParenthesis(char character) {
@@ -63,5 +69,9 @@ public class CalculationUtils {
 
     public static boolean isParenthesis(char character) {
         return isLeftParenthesis(character) || isRightParenthesis(character);
+    }
+
+    public static boolean isInteger(double value) {
+        return value % 1 == 0;
     }
 }

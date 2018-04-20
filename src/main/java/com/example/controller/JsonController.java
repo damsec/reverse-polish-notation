@@ -1,18 +1,17 @@
 package com.example.controller;
 
-import com.example.converter.Converter;
 import com.example.converter.PostfixConverter;
-import com.example.evaluator.Evaluator;
 import com.example.evaluator.PostfixEvaluator;
-import com.example.expression.PostfixExpression;
+import com.example.expression.InfixExpression;
 import com.example.io.exception.FileMissingException;
 import com.example.io.reader.JsonExpressionReader;
-import com.example.io.reader.ExpressionReader;
-import com.example.io.writer.GeneralResultWriter;
-import com.example.io.writer.JsonGeneralResultWriter;
-import com.example.io.writer.mapper.GeneralResultMapper;
-import com.example.result.GeneralResult;
+import com.example.io.writer.JsonResultInfoWriter;
+import com.example.io.writer.ResultInfoWriter;
 import com.example.result.Result;
+import com.example.result.ResultDetails;
+import com.example.result.ResultGenerator;
+import com.example.result.ResultInfo;
+import com.example.result.exception.ExpressionException;
 import com.example.validator.InfixValidator;
 
 import java.util.ArrayList;
@@ -20,65 +19,77 @@ import java.util.List;
 
 import static com.example.io.writer.FileNameGenerator.getFileName;
 import static com.example.utils.DateTimeGenerator.getFormattedDateTime;
+import static java.util.Objects.isNull;
 
 public class JsonController implements Controller {
 
-    private static int successCount = 0;
-    private static int errorCount = 0;
-    private static int totalCount = 0;
+    private int successCount = 0;
+    private int errorCount = 0;
+    private int totalCount = 0;
 
-    private static Converter postfixConverter = new PostfixConverter(new InfixValidator());
-    private static Evaluator postfixEvaluator = new PostfixEvaluator();
-    private static ExpressionReader jsonExpressionReader = new JsonExpressionReader();
-    private static GeneralResultWriter generalResultWriter = new JsonGeneralResultWriter(new GeneralResultMapper());
-    
+    private PostfixConverter postfixConverter = new PostfixConverter(new InfixValidator());
+    private PostfixEvaluator postfixEvaluator = new PostfixEvaluator();
+    private JsonExpressionReader jsonExpressionReader = new JsonExpressionReader();
+    private ResultGenerator resultGenerator = new ResultGenerator(postfixConverter, postfixEvaluator);
+    private ResultInfoWriter generalResultWriter = new JsonResultInfoWriter();
+
     @Override
-    public void execute(String inputFilePath ,String outputFilePath) {
+    public void execute(String inputFilePath, String outputFilePath) {
 
-        GeneralResult generalResult = new GeneralResult();
+        ResultInfo generalResult = new ResultInfo();
         List<Result> results = new ArrayList<>();
-        List<String> infixExpressions = jsonExpressionReader.read(inputFilePath);
+        List<InfixExpression> infixExpressions = jsonExpressionReader.read(inputFilePath);
 
-        for(String infixExpression : infixExpressions) {
+        for (InfixExpression infixExpression : infixExpressions) {
+
             Result result = new Result();
-            
-            result.setInfixExpression(infixExpression);
-            totalCount++;
-            System.out.printf("%d. %s = ", totalCount, infixExpression);
-            
+
+            System.out.printf("%s = ", infixExpression.getExpression());
             try {
-                PostfixExpression postfixExpression = postfixConverter.convert(infixExpression);
-                result.setPostfixExpression(postfixExpression.toString());
-                
-                double calculationResult = postfixEvaluator.evaluate(postfixExpression);
-                result.setCalculationResult(calculationResult);
-                
-                System.out.println(calculationResult);
-                successCount++;
-            } catch (IllegalArgumentException | ArithmeticException exception) {
+                result = resultGenerator.generateResult(infixExpression);
+                if (isNull(infixExpression.getParameters())) {
+                    successCount++;
+                    totalCount++;
+                    System.out.printf("%f \n", result.getResultDetails().get(0).getCalculationResult());
+                } else {
+                    System.out.println("{");
+                    for (ResultDetails details : result.getResultDetails()) {
+                        System.out.printf("\t%s = ", details.getInfixExpression());
+                        if (isNull(details.getErrorMessage())) {
+                            System.out.println(details.getCalculationResult());
+                            successCount++;
+                        } else {
+                            System.out.println(details.getErrorMessage());
+                            errorCount++;
+                        }
+                        totalCount++;
+                    }
+                    System.out.println("}");
+                }
+            } catch (ExpressionException exception) {
                 System.out.println(exception.getMessage());
-                result.setErrorMessage(exception.getMessage());
-                
+                result.setExpression(infixExpression.getExpression());
+                result.setError(exception.getMessage());
                 errorCount++;
             } catch (FileMissingException exception) {
                 System.out.println(exception.getMessage());
             }
             results.add(result);
         }
-        printSummary();
-        
         generalResult.setCreationDateTime(getFormattedDateTime("dd.MM.yyyy HH:mm:ss"));
         generalResult.setResults(results);
         generalResult.setTotalExpressionsNumber(totalCount);
         generalResult.setSuccessNumber(successCount);
         generalResult.setErrorNumber(errorCount);
-        
+
         generalResultWriter.write(generalResult, outputFilePath);
+
+        printSummary();
         System.out.println("\nFile was saved in: " + outputFilePath + "/" + getFileName());
     }
 
     private void printSummary() {
-        System.out.printf("Successfully evaluated expressions: %d/%d \n", successCount, totalCount);
+        System.out.printf("\nSuccessfully evaluated expressions: %d/%d \n", successCount, totalCount);
         System.out.printf("Errors: %d/%d \n", errorCount, totalCount);
     }
 }

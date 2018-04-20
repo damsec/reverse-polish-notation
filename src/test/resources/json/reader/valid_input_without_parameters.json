@@ -3,13 +3,7 @@
     "expression": "2+2"
   },
   {
-    "expression": ""
-  },
-  {
     "expression": "(2+2)*2"
-  },
-  {
-    "expression": null
   },
   {
     "expression": "((2+7)/3+(14-3)*4)/2"

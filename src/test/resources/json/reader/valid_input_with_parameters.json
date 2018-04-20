@@ -1,0 +1,25 @@
+[
+  {
+    "expression": "x+y",
+    "parameters": [
+      {
+        "x": 23,
+        "y": 45
+      },
+      {
+        "x": 4.26,
+        "y": 0
+      }
+    ]
+  },
+  {
+    "expression": "x*y-z",
+    "parameters": [
+      {
+        "x": 23,
+        "y": 45,
+        "z": 678
+      }
+    ]
+  }
+]

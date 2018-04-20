@@ -2,7 +2,7 @@ package com.example.result;
 
 import java.util.List;
 
-public class GeneralResult {
+public class ResultInfo {
 
     private String creationDateTime;
     private List<Result> results;
