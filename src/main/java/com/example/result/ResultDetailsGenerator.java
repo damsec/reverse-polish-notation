@@ -34,7 +34,7 @@ class ResultDetailsGenerator {
             resultDetails.setPostfixExpression(postfixExpression.getExpression());
             resultDetails.setCalculationResult(postfixEvaluator.evaluate(postfixExpression));
         } catch (ArithmeticException exception) {
-            throw new ExpressionException("You can't divide by zero");
+            throw new ExpressionException(exception.getMessage());
         }
         return resultDetails;
     }

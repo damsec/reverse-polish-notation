@@ -43,7 +43,7 @@ public class ResultDetailsGeneratorTest {
     @Test
     public void should_ThrowPExpressionException_If_ParametersContainDivisorEqualToZero() {
         exception.expect(ExpressionException.class);
-        exception.expectMessage(is("You can't divide by zero"));
+        exception.expectMessage(is("You can't divide by zero."));
 
         InfixExpression infixExpression = new InfixExpression("a/b");
         HashMap<String, Double> parameters = new HashMap<>();

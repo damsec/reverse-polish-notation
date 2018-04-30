@@ -98,7 +98,7 @@ public class ResultGeneratorTest {
     }
 
     @Test
-    public void should_GenerateResult_If_InfixExpressionContainsTwoMapsOfParametersAndOneMapDivisorEqualToZero() {
+    public void should_GenerateResult_If_InfixExpressionContainsTwoMapsOfParametersAndOneMapContainsDivisorEqualToZero() {
         HashMap<String, Double> parameters1 = new HashMap<>();
         parameters1.put("a", 100d);
         parameters1.put("b", 4d);

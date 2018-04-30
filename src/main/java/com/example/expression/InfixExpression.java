@@ -18,7 +18,7 @@ public class InfixExpression implements Expression {
 
     @JsonCreator
     public InfixExpression(
-            @JsonProperty("expression") String expression, 
+            @JsonProperty("expression") String expression,
             @JsonProperty("parameters") List<HashMap<String, Double>> parameters) {
         this.expression = expression;
         this.parameters = parameters;
@@ -31,10 +31,6 @@ public class InfixExpression implements Expression {
 
     public List<HashMap<String, Double>> getParameters() {
         return parameters;
-    }
-    
-    public void addParameters(HashMap<String, Double> params) {
-        parameters.add(params);
     }
 
     @Override

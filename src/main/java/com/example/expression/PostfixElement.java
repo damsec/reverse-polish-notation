@@ -23,10 +23,6 @@ public class PostfixElement {
         this.type = type;
     }
 
-    private boolean isInteger(double value) {
-        return value % 1 == 0;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
