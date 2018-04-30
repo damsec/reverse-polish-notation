@@ -113,7 +113,7 @@ public class ResultGeneratorTest {
         resultDetails1.setPostfixExpression("100.0 4.0 /");
         resultDetails1.setCalculationResult(25d);
         ResultDetails resultDetails2 = new ResultDetails();
-        resultDetails2.setErrorMessage("You can't divide by zero");
+        resultDetails2.setErrorMessage("You can't divide by zero.");
         result.setResultDetails(Arrays.asList(resultDetails1, resultDetails2));
         assertThat(resultGenerator.generateResult(infixExpression)).isEqualTo(result);
     }
