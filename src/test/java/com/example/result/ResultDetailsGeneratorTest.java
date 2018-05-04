@@ -26,7 +26,7 @@ public class ResultDetailsGeneratorTest {
     }
 
     @Test
-    public void should_GenerateResultDetails_If_() {
+    public void should_GenerateResultDetails_If_ExpressionAndParametersAreValid() {
         InfixExpression infixExpression = new InfixExpression("a+b");
         HashMap<String, Double> parameters = new HashMap<>();
         parameters.put("a", 123d);
@@ -41,7 +41,7 @@ public class ResultDetailsGeneratorTest {
     }
 
     @Test
-    public void should_ThrowPExpressionException_If_ParametersContainDivisorEqualToZero() {
+    public void should_ThrowExpressionException_If_ParametersContainDivisorEqualToZero() {
         exception.expect(ExpressionException.class);
         exception.expectMessage(is("You can't divide by zero."));
 
