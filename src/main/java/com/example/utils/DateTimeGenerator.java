@@ -5,12 +5,14 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeGenerator {
 
-    public static String getFormattedDateTime(String format) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return getCurrentDateTime().format(formatter);
+    private static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd-HHmmss";
+
+    public static String getFormattedDateTime() {
+        return getFormattedDateTime(DEFAULT_DATE_TIME_FORMAT);
     }
 
-    private static LocalDateTime getCurrentDateTime() {
-        return LocalDateTime.now();
+    public static String getFormattedDateTime(String dateTimeFormat) {
+        return LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern(dateTimeFormat));
     }
 }
