@@ -7,6 +7,14 @@ public class PostfixElement {
     private String value;
     private ElementType type;
 
+    public PostfixElement() {
+    }
+
+    public PostfixElement(String value, ElementType type) {
+        this.value = value;
+        this.type = type;
+    }
+
     public String getValue() {
         return value;
     }

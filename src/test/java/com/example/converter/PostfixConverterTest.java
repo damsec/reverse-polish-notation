@@ -149,32 +149,12 @@ public class PostfixConverterTest {
     private PostfixExpression getPostfixExpression() {
         PostfixExpression postfixExpression = new PostfixExpression();
 
-        PostfixElement element1 = new PostfixElement();
-        element1.setValue("123");
-        element1.setType(CONSTANT);
-
-        PostfixElement element2 = new PostfixElement();
-        element2.setValue("foo");
-        element2.setType(VARIABLE);
-
-        PostfixElement element3 = new PostfixElement();
-        element3.setValue("6");
-        element3.setType(CONSTANT);
-
-        PostfixElement element4 = new PostfixElement();
-        element4.setValue("*");
-        element4.setType(OPERATOR);
-
-        PostfixElement element5 = new PostfixElement();
-        element5.setValue("+");
-        element5.setType(OPERATOR);
-
         Queue<PostfixElement> elementsQueue = new LinkedList<>();
-        elementsQueue.add(element1);
-        elementsQueue.add(element2);
-        elementsQueue.add(element3);
-        elementsQueue.add(element4);
-        elementsQueue.add(element5);
+        elementsQueue.add(new PostfixElement("123", CONSTANT));
+        elementsQueue.add(new PostfixElement("foo", VARIABLE));
+        elementsQueue.add(new PostfixElement("6", CONSTANT));
+        elementsQueue.add(new PostfixElement("*", OPERATOR));
+        elementsQueue.add(new PostfixElement("+", OPERATOR));
         postfixExpression.setElements(elementsQueue);
 
         return postfixExpression;
