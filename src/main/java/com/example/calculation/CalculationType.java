@@ -23,4 +23,21 @@ public enum CalculationType {
     public int getPriority() {
         return priority;
     }
+
+    public Calculation getCalculation() {
+        switch (this) {
+            case EXPONENTIATION:
+                return new Exponentiation();
+            case MULTIPLICATION:
+                return new Multiplication();
+            case DIVISION:
+                return new Division();
+            case ADDITION:
+                return new Addition();
+            case SUBTRACTION:
+                return new Subtraction();
+            default:
+                throw new IllegalArgumentException("Unsupported calculation type.");
+        }
+    }
 }

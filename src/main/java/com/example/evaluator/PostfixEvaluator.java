@@ -1,7 +1,6 @@
 package com.example.evaluator;
 
 import com.example.calculation.Calculation;
-import com.example.calculation.CalculationFactory;
 import com.example.calculation.CalculationType;
 import com.example.expression.PostfixElement;
 import com.example.expression.PostfixExpression;
@@ -61,7 +60,7 @@ public class PostfixEvaluator implements Evaluator {
 
     private Calculation getCalculation(String operator) {
         CalculationType calculationType = getCalculationType(operator);
-        return CalculationFactory.make(calculationType);
+        return calculationType.getCalculation();
     }
 
     private CalculationType getCalculationType(String operator) {
