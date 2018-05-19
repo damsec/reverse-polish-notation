@@ -2,5 +2,5 @@ package com.example.calculation;
 
 public interface Calculation {
 
-    double calculate(double[] numbers);
+    double calculate(double numberA, double numberB);
 }

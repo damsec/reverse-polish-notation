@@ -3,7 +3,7 @@ package com.example.calculation;
 public class Subtraction implements Calculation {
 
     @Override
-    public double calculate(double[] numbers) {
-        return numbers[0] - numbers[1];
+    public double calculate(double minuend, double subtrahend) {
+        return minuend - subtrahend;
     }
 }

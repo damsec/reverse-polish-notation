@@ -54,8 +54,9 @@ public class PostfixEvaluator implements Evaluator {
 
     private double calculate(String operator) {
         Calculation calculation = getCalculation(operator);
-        double[] numbers = popFromStackTwoElements();
-        return calculation.calculate(numbers);
+        double numberB = popFromStack();
+        double numberA = popFromStack();
+        return calculation.calculate(numberA, numberB);
     }
 
     private Calculation getCalculation(String operator) {
@@ -65,12 +66,6 @@ public class PostfixEvaluator implements Evaluator {
 
     private CalculationType getCalculationType(String operator) {
         return CALCULATION_TYPES.get(operator);
-    }
-
-    private double[] popFromStackTwoElements() {
-        double firstNumber = popFromStack();
-        double secondNumber = popFromStack();
-        return new double[]{secondNumber, firstNumber};
     }
 
     private boolean isNumber(PostfixElement element) {
