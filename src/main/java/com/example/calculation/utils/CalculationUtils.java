@@ -11,6 +11,7 @@ import static java.lang.Character.isDigit;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.math.NumberUtils.isCreatable;
 
 public class CalculationUtils {
 
@@ -44,7 +45,11 @@ public class CalculationUtils {
     }
 
     public static boolean isVariable(char character) {
-        return isAlphabetic(character) || isDigit(character);
+        return isAlphabetic(character);
+    }
+
+    public static boolean isVariable(String value) {
+        return value.matches("[a-zA-Z]+");
     }
 
     public static boolean isDecimalSeparator(char character) {
@@ -54,9 +59,9 @@ public class CalculationUtils {
     public static boolean isNegativeSign(char character, char previousCharacter) {
         return character == NEGATIVE_SIGN_CHARACTER && (isOperator(previousCharacter) || isParenthesis(previousCharacter) || previousCharacter == Character.MIN_VALUE);
     }
-    
-    public static boolean isNumber(char character, char previousCharacter) {
-        return isDigit(character) && !isVariable(previousCharacter);
+
+    public static boolean isNumber(String value) {
+        return isCreatable(value);
     }
 
     public static boolean isLeftParenthesis(char character) {

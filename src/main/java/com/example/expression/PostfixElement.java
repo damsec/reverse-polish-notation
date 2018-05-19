@@ -2,6 +2,11 @@ package com.example.expression;
 
 import java.util.Objects;
 
+import static com.example.calculation.utils.CalculationUtils.isNumber;
+import static com.example.calculation.utils.CalculationUtils.isOperator;
+import static com.example.calculation.utils.CalculationUtils.isVariable;
+import static java.util.Objects.isNull;
+
 public class PostfixElement {
 
     private String value;
@@ -10,9 +15,9 @@ public class PostfixElement {
     public PostfixElement() {
     }
 
-    public PostfixElement(String value, ElementType type) {
+    public PostfixElement(String value) {
         this.value = value;
-        this.type = type;
+        this.type = recognizeType(value);
     }
 
     public String getValue() {
@@ -29,6 +34,22 @@ public class PostfixElement {
 
     public void setType(ElementType type) {
         this.type = type;
+    }
+
+    private ElementType recognizeType(String value) {
+        if (isNull(value) || value.isEmpty()) {
+            throw new IllegalArgumentException("Value can't be null or empty");
+        }
+        if (isNumber(value)) {
+            return ElementType.CONSTANT;
+        }
+        if (isVariable(value)) {
+            return ElementType.VARIABLE;
+        }
+        if (isOperator(value)) {
+            return ElementType.OPERATOR;
+        }
+        throw new IllegalArgumentException("Unrecognized element type: " + value);
     }
 
     @Override

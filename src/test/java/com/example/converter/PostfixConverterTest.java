@@ -150,11 +150,11 @@ public class PostfixConverterTest {
         PostfixExpression postfixExpression = new PostfixExpression();
 
         Queue<PostfixElement> elementsQueue = new LinkedList<>();
-        elementsQueue.add(new PostfixElement("123", CONSTANT));
-        elementsQueue.add(new PostfixElement("foo", VARIABLE));
-        elementsQueue.add(new PostfixElement("6", CONSTANT));
-        elementsQueue.add(new PostfixElement("*", OPERATOR));
-        elementsQueue.add(new PostfixElement("+", OPERATOR));
+        elementsQueue.add(new PostfixElement("123"));
+        elementsQueue.add(new PostfixElement("foo"));
+        elementsQueue.add(new PostfixElement("6"));
+        elementsQueue.add(new PostfixElement("*"));
+        elementsQueue.add(new PostfixElement("+"));
         postfixExpression.setElements(elementsQueue);
 
         return postfixExpression;
