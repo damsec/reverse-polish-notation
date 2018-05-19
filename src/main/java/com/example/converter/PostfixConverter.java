@@ -15,8 +15,6 @@ import static java.util.Objects.isNull;
 
 public class PostfixConverter implements Converter<InfixExpression, PostfixExpression> {
 
-    private PostfixElement postfixElement = new PostfixElement();
-
     private Stack<Character> operators = new Stack<>();
 
     private StringBuilder number = new StringBuilder();
@@ -69,16 +67,6 @@ public class PostfixConverter implements Converter<InfixExpression, PostfixExpre
         } else {
             throw new IllegalArgumentException(String.format("%s is unrecognized character.", character));
         }
-    }
-
-    private void addNumberToElement() {
-        postfixElement.setValue(number.toString());
-        number = new StringBuilder();
-    }
-
-    private void addVariableToElement() {
-        postfixElement.setValue(variable.toString());
-        variable = new StringBuilder();
     }
 
     private void addOperatorsFromStack(PostfixExpression postfixExpression) {
@@ -139,23 +127,16 @@ public class PostfixConverter implements Converter<InfixExpression, PostfixExpre
 
     private void addOperandToQueue(PostfixExpression postfixExpression) {
         if (number.length() > 0) {
-            addNumberToElement();
-            postfixElement.setType(CONSTANT);
+            postfixExpression.getElements().add(new PostfixElement(number.toString()));
+            number = new StringBuilder();
         }
         if (variable.length() > 0) {
-            addVariableToElement();
-            postfixElement.setType(VARIABLE);
-        }
-        if (!isNull(postfixElement.getValue())) {
-            postfixExpression.getElements().add(postfixElement);
-            postfixElement = new PostfixElement();
+            postfixExpression.getElements().add(new PostfixElement(variable.toString()));
+            variable = new StringBuilder();
         }
     }
 
     private void addOperatorToQueue(PostfixExpression postfixExpression, char operator) {
-        postfixElement.setValue(String.valueOf(operator));
-        postfixElement.setType(OPERATOR);
-        postfixExpression.getElements().add(postfixElement);
-        postfixElement = new PostfixElement();
+        postfixExpression.getElements().add(new PostfixElement(String.valueOf(operator)));
     }
 }

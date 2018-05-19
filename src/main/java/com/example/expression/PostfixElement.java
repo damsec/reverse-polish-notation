@@ -12,9 +12,6 @@ public class PostfixElement {
     private String value;
     private ElementType type;
 
-    public PostfixElement() {
-    }
-
     public PostfixElement(String value) {
         this.value = value;
         this.type = recognizeType(value);
@@ -24,16 +21,8 @@ public class PostfixElement {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public ElementType getType() {
         return type;
-    }
-
-    public void setType(ElementType type) {
-        this.type = type;
     }
 
     private ElementType recognizeType(String value) {

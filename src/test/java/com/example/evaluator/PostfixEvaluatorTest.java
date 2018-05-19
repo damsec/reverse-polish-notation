@@ -112,15 +112,7 @@ public class PostfixEvaluatorTest {
         String[] postfixElements = getPostfixElements(postfixExpression);
 
         for (String element : postfixElements) {
-            PostfixElement postfixElement = new PostfixElement();
-            if (isOperator(element)) {
-                postfixElement.setValue(element);
-                postfixElement.setType(OPERATOR);
-            } else {
-                postfixElement.setValue(element);
-                postfixElement.setType(CONSTANT);
-            }
-            elements.add(postfixElement);
+            elements.add(new PostfixElement(element));
         }
         return elements;
     }

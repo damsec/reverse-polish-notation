@@ -62,8 +62,7 @@ class ResultDetailsGenerator {
         PostfixExpression output = new PostfixExpression();
         for (PostfixElement element : postfixExpression.getElements()) {
             if (element.getType() == VARIABLE && parameters.containsKey(element.getValue())) {
-                element.setValue(String.valueOf(parameters.get(element.getValue())));
-                element.setType(CONSTANT);
+                element = new PostfixElement(String.valueOf(parameters.get(element.getValue())));
             } else if (element.getType() == VARIABLE && !parameters.containsKey(element.getValue())) {
                 throw new ParameterException("Parameters do not contain value for: " + element.getValue());
             }
