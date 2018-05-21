@@ -17,6 +17,14 @@ public class PostfixElement {
         this.type = recognizeType(value);
     }
 
+    public PostfixElement(char character) {
+        this(String.valueOf(character));
+    }
+
+    public PostfixElement(StringBuilder stringBuilder) {
+        this(stringBuilder.toString());
+    }
+
     public String getValue() {
         return value;
     }

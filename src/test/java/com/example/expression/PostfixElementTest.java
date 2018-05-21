@@ -59,7 +59,8 @@ public class PostfixElementTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(is("Value can't be null or empty"));
 
-        new PostfixElement(null);
+        String nullValue = null;
+        new PostfixElement(nullValue);
     }
 
     @Test
@@ -67,7 +68,8 @@ public class PostfixElementTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(is("Value can't be null or empty"));
 
-        new PostfixElement("");
+        String emptyValue = "";
+        new PostfixElement(emptyValue);
     }
 
     @Test
@@ -75,6 +77,7 @@ public class PostfixElementTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Unrecognized element type");
 
-        new PostfixElement("1f2o3o");
+        String invalidValue = "1f2o3o";
+        new PostfixElement(invalidValue);
     }
 }

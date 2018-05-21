@@ -8,10 +8,8 @@ import com.example.validator.Validator;
 import java.util.Stack;
 
 import static com.example.calculation.utils.CalculationUtils.*;
-import static com.example.expression.ElementType.*;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
-import static java.util.Objects.isNull;
 
 public class PostfixConverter implements Converter<InfixExpression, PostfixExpression> {
 
@@ -127,16 +125,16 @@ public class PostfixConverter implements Converter<InfixExpression, PostfixExpre
 
     private void addOperandToQueue(PostfixExpression postfixExpression) {
         if (number.length() > 0) {
-            postfixExpression.getElements().add(new PostfixElement(number.toString()));
+            postfixExpression.getElements().add(new PostfixElement(number));
             number = new StringBuilder();
         }
         if (variable.length() > 0) {
-            postfixExpression.getElements().add(new PostfixElement(variable.toString()));
+            postfixExpression.getElements().add(new PostfixElement(variable));
             variable = new StringBuilder();
         }
     }
 
     private void addOperatorToQueue(PostfixExpression postfixExpression, char operator) {
-        postfixExpression.getElements().add(new PostfixElement(String.valueOf(operator)));
+        postfixExpression.getElements().add(new PostfixElement(operator));
     }
 }
