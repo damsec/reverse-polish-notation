@@ -25,7 +25,7 @@ public class ResultGenerator {
     public Result generateResult(InfixExpression infixExpression) {
         Result result = new Result();
        
-        result.setExpression(infixExpression.getExpression());
+        result.getExpressionInfo().setExpression(infixExpression.getExpression());
 
         if (isNull(infixExpression.getParameters())) {
             ResultDetails resultDetails = new ResultDetails();

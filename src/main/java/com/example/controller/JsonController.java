@@ -68,8 +68,8 @@ public class JsonController implements Controller {
                 }
             } catch (ExpressionException exception) {
                 System.out.println(exception.getMessage());
-                result.setExpression(infixExpression.getExpression());
-                result.setError(exception.getMessage());
+                result.getExpressionInfo().setExpression(infixExpression.getExpression());
+                result.getExpressionInfo().setError(exception.getMessage());
                 errorCount++;
             } catch (FileMissingException exception) {
                 System.out.println(exception.getMessage());

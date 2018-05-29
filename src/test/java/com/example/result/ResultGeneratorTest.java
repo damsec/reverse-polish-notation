@@ -32,7 +32,7 @@ public class ResultGeneratorTest {
     public void should_GenerateResult_If_InfixExpressionDoesNotContainParameters() {
         InfixExpression infixExpression = new InfixExpression("123+456");
         Result result = new Result();
-        result.setExpression(infixExpression.getExpression());
+        result.getExpressionInfo().setExpression(infixExpression.getExpression());
         ResultDetails resultDetails = new ResultDetails();
         resultDetails.setInfixExpression(infixExpression.getExpression());
         resultDetails.setPostfixExpression("123 456 +");
@@ -51,7 +51,7 @@ public class ResultGeneratorTest {
         parameters2.put("b", -48d);
         InfixExpression infixExpression = new InfixExpression("a+b*44", Arrays.asList(parameters1, parameters2));
         Result result = new Result();
-        result.setExpression(infixExpression.getExpression());
+        result.getExpressionInfo().setExpression(infixExpression.getExpression());
         ResultDetails resultDetails1 = new ResultDetails();
         resultDetails1.setParameters(parameters1);
         resultDetails1.setInfixExpression("123+456*44");
@@ -72,7 +72,7 @@ public class ResultGeneratorTest {
         parameters.put("a", 123d);
         InfixExpression infixExpression = new InfixExpression("a+b*44", Arrays.asList(parameters));
         Result result = new Result();
-        result.setExpression(infixExpression.getExpression());
+        result.getExpressionInfo().setExpression(infixExpression.getExpression());
         ResultDetails resultDetails = new ResultDetails();
         resultDetails.setParameters(parameters);
         resultDetails.setErrorMessage("Parameters do not contain value for: b");
@@ -89,7 +89,7 @@ public class ResultGeneratorTest {
         parameters2.put("a", 0.56d);
         InfixExpression infixExpression = new InfixExpression("a+b*44", Arrays.asList(parameters1, parameters2));
         Result result = new Result();
-        result.setExpression(infixExpression.getExpression());
+        result.getExpressionInfo().setExpression(infixExpression.getExpression());
         ResultDetails resultDetails1 = new ResultDetails();
         resultDetails1.setParameters(parameters1);
         resultDetails1.setInfixExpression("123+456*44");
@@ -112,7 +112,7 @@ public class ResultGeneratorTest {
         parameters2.put("b", 0d);
         InfixExpression infixExpression = new InfixExpression("a/b", Arrays.asList(parameters1, parameters2));
         Result result = new Result();
-        result.setExpression(infixExpression.getExpression());
+        result.getExpressionInfo().setExpression(infixExpression.getExpression());
         ResultDetails resultDetails1 = new ResultDetails();
         resultDetails1.setParameters(parameters1);
         resultDetails1.setInfixExpression("100/4");
