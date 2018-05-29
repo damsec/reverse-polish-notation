@@ -45,6 +45,7 @@ public class ResultGenerator {
                 try {
                     resultDetails = resultDetailsGenerator.generateResultDetails(infixExpression, parameters);
                 } catch (ParameterException | ExpressionException exception) {
+                    resultDetails.setParameters(parameters);
                     resultDetails.setErrorMessage(exception.getMessage());
                 }
                 result.getResultDetails().add(resultDetails);

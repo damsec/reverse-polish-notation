@@ -53,10 +53,12 @@ public class ResultGeneratorTest {
         Result result = new Result();
         result.setExpression(infixExpression.getExpression());
         ResultDetails resultDetails1 = new ResultDetails();
+        resultDetails1.setParameters(parameters1);
         resultDetails1.setInfixExpression("123+456*44");
         resultDetails1.setPostfixExpression("123.0 456.0 44 * +");
         resultDetails1.setCalculationResult(20187d);
         ResultDetails resultDetails2 = new ResultDetails();
+        resultDetails2.setParameters(parameters2);
         resultDetails2.setInfixExpression("0.56+-48*44");
         resultDetails2.setPostfixExpression("0.56 -48.0 44 * +");
         resultDetails2.setCalculationResult(-2111.44d);
@@ -66,12 +68,13 @@ public class ResultGeneratorTest {
 
     @Test
     public void should_GenerateResult_If_InfixExpressionContainsOneMapOfParametersWithMissingParameter() {
-        HashMap<String, Double> parameters1 = new HashMap<>();
-        parameters1.put("a", 123d);
-        InfixExpression infixExpression = new InfixExpression("a+b*44", Arrays.asList(parameters1));
+        HashMap<String, Double> parameters = new HashMap<>();
+        parameters.put("a", 123d);
+        InfixExpression infixExpression = new InfixExpression("a+b*44", Arrays.asList(parameters));
         Result result = new Result();
         result.setExpression(infixExpression.getExpression());
         ResultDetails resultDetails = new ResultDetails();
+        resultDetails.setParameters(parameters);
         resultDetails.setErrorMessage("Parameters do not contain value for: b");
         result.setResultDetails(Arrays.asList(resultDetails));
         assertThat(resultGenerator.generateResult(infixExpression)).isEqualTo(result);
@@ -88,10 +91,12 @@ public class ResultGeneratorTest {
         Result result = new Result();
         result.setExpression(infixExpression.getExpression());
         ResultDetails resultDetails1 = new ResultDetails();
+        resultDetails1.setParameters(parameters1);
         resultDetails1.setInfixExpression("123+456*44");
         resultDetails1.setPostfixExpression("123.0 456.0 44 * +");
         resultDetails1.setCalculationResult(20187d);
         ResultDetails resultDetails2 = new ResultDetails();
+        resultDetails2.setParameters(parameters2);
         resultDetails2.setErrorMessage("Parameters do not contain value for: b");
         result.setResultDetails(Arrays.asList(resultDetails1, resultDetails2));
         assertThat(resultGenerator.generateResult(infixExpression)).isEqualTo(result);
@@ -109,10 +114,12 @@ public class ResultGeneratorTest {
         Result result = new Result();
         result.setExpression(infixExpression.getExpression());
         ResultDetails resultDetails1 = new ResultDetails();
+        resultDetails1.setParameters(parameters1);
         resultDetails1.setInfixExpression("100/4");
         resultDetails1.setPostfixExpression("100.0 4.0 /");
         resultDetails1.setCalculationResult(25d);
         ResultDetails resultDetails2 = new ResultDetails();
+        resultDetails2.setParameters(parameters2);
         resultDetails2.setErrorMessage("You can't divide by zero.");
         result.setResultDetails(Arrays.asList(resultDetails1, resultDetails2));
         assertThat(resultGenerator.generateResult(infixExpression)).isEqualTo(result);

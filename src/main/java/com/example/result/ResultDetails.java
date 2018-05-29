@@ -1,14 +1,24 @@
 package com.example.result;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class ResultDetails {
-    
+
+    private Map<String, Double> parameters;
     private String infixExpression;
     private String postfixExpression;
     private Double calculationResult;
     private String errorMessage;
-    
+
+    public Map<String, Double> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Double> parameters) {
+        this.parameters = parameters;
+    }
+
     public String getInfixExpression() {
         return infixExpression;
     }
@@ -46,7 +56,8 @@ public class ResultDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResultDetails that = (ResultDetails) o;
-        return Objects.equals(infixExpression, that.infixExpression) &&
+        return Objects.equals(parameters, that.parameters) &&
+                Objects.equals(infixExpression, that.infixExpression) &&
                 Objects.equals(postfixExpression, that.postfixExpression) &&
                 Objects.equals(calculationResult, that.calculationResult) &&
                 Objects.equals(errorMessage, that.errorMessage);
@@ -55,7 +66,8 @@ public class ResultDetails {
     @Override
     public String toString() {
         return "ResultDetails{" +
-                "infixExpression='" + infixExpression + '\'' +
+                "parameters=" + parameters +
+                ", infixExpression='" + infixExpression + '\'' +
                 ", postfixExpression='" + postfixExpression + '\'' +
                 ", calculationResult=" + calculationResult +
                 ", errorMessage='" + errorMessage + '\'' +

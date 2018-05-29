@@ -20,14 +20,10 @@ class ResultDetailsGenerator {
 
     private PostfixConverter postfixConverter = new PostfixConverter(new InfixValidator());
     private PostfixEvaluator postfixEvaluator = new PostfixEvaluator();
-    
-    ResultDetails generateResultDetails(InfixExpression infixExpression, HashMap<String, Double> parameters) {
-        ResultDetails resultDetails = getResultDetails(infixExpression, parameters);
-        return resultDetails;
-    }
 
-    private ResultDetails getResultDetails(InfixExpression infixExpression, HashMap<String, Double> parameters) {
+    public ResultDetails generateResultDetails(InfixExpression infixExpression, HashMap<String, Double> parameters) {
         ResultDetails resultDetails = new ResultDetails();
+        resultDetails.setParameters(parameters);
         try {
             resultDetails.setInfixExpression(substituteVariablesInInfixExpression(infixExpression.getExpression(), parameters));
             PostfixExpression postfixExpression = substituteVariablesInPostfixExpression(infixExpression, parameters);

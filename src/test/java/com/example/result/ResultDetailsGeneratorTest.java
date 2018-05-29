@@ -33,6 +33,7 @@ public class ResultDetailsGeneratorTest {
         parameters.put("b", 456d);
 
         ResultDetails resultDetails = new ResultDetails();
+        resultDetails.setParameters(parameters);
         resultDetails.setInfixExpression("123+456");
         resultDetails.setPostfixExpression("123.0 456.0 +");
         resultDetails.setCalculationResult(579d);
