@@ -1,5 +1,7 @@
 package com.example.result;
 
+import com.example.expression.ExpressionInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
