@@ -71,6 +71,7 @@ public class JsonController implements Controller {
                 result.getExpressionInfo().setExpression(infixExpression.getExpression());
                 result.getExpressionInfo().setError(exception.getMessage());
                 errorCount++;
+                totalCount++;
             } catch (FileMissingException exception) {
                 System.out.println(exception.getMessage());
             }

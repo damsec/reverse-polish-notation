@@ -14,12 +14,18 @@ public class InfixValidator implements Validator {
         int leftParenthesesNumber = 0;
         int rightParenthesesNumber = 0;
 
+        char previousCharacter = Character.MIN_VALUE;
+
         for (int i = 0; i < infix.length(); i++) {
 
             char character = infix.charAt(i);
 
+            if (isDivisorEqualToZero(character, previousCharacter)) {
+                throw new ArithmeticException("You can't divide by zero.");
+            }
+
             if (!isValidCharacter(character)) {
-                return false;
+                throw new IllegalArgumentException(character + " is invalid character.");
             }
 
             if (isLeftParenthesis(character)) {
@@ -32,6 +38,7 @@ public class InfixValidator implements Validator {
                     return false;
                 }
             }
+            previousCharacter = isWhitespace(character) ? previousCharacter : character;
         }
         return leftParenthesesNumber == rightParenthesesNumber;
     }

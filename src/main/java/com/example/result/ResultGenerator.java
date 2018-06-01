@@ -24,18 +24,24 @@ public class ResultGenerator {
 
     public Result generateResult(InfixExpression infixExpression) {
         Result result = new Result();
-       
+        PostfixExpression postfixExpression;
+
         result.getExpressionInfo().setExpression(infixExpression.getExpression());
+
+        try {
+            postfixExpression = postfixConverter.convert(infixExpression);
+        } catch (IllegalArgumentException | ArithmeticException exception) {
+            throw new ExpressionException(exception.getMessage());
+        }
 
         if (isNull(infixExpression.getParameters())) {
             ResultDetails resultDetails = new ResultDetails();
             try {
                 resultDetails.setInfixExpression(infixExpression.getExpression());
-                PostfixExpression postfixExpression = postfixConverter.convert(infixExpression);
                 resultDetails.setPostfixExpression(postfixExpression.getExpression());
                 resultDetails.setCalculationResult(postfixEvaluator.evaluate(postfixExpression));
                 result.getResultDetails().add(resultDetails);
-            } catch (IllegalArgumentException | ArithmeticException exception) {
+            } catch (IllegalArgumentException exception) {
                 throw new ExpressionException(exception.getMessage());
             }
         } else {

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Character.isAlphabetic;
-import static java.lang.Character.isDigit;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -35,6 +34,8 @@ public class CalculationUtils {
     private static final char RIGHT_PARENTHESIS_CHARACTER = ')';
 
     private static final char NEGATIVE_SIGN_CHARACTER = '-';
+    
+    private static final char DIVISION_OPERATOR = '/';
 
     public static boolean isOperator(String element) {
         return CALCULATION_SIGNS.contains(element);
@@ -78,5 +79,13 @@ public class CalculationUtils {
 
     public static boolean isInteger(double value) {
         return value % 1 == 0;
+    }
+
+    public static boolean isWhitespace(char character) {
+        return Character.toString(character).matches("\\s");
+    }
+    
+    public static boolean isDivisorEqualToZero(char character, char previousCharacter) {
+        return character == '0' && previousCharacter == DIVISION_OPERATOR;
     }
 }
